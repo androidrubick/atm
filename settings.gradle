@@ -1,0 +1,4 @@
+// here, we need dir of this script file
+//noinspection GroovyUnusedAssignment
+def ATM_LOCAL_PATH = buildscript.sourceFile.parentFile
+

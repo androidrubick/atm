@@ -1,0 +1,19 @@
+// here, we need dir of this script file
+//noinspection GroovyUnusedAssignment
+def ATM_LOCAL_PATH = buildscript.sourceFile.parentFile
+
+repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile JUNIT_LIB
+}
+
+compileJava {
+    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
