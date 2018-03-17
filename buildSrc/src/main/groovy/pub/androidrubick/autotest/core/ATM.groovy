@@ -3,6 +3,9 @@ package pub.androidrubick.autotest.core;
 import android.support.annotation.NonNull;
 
 import org.gradle.api.Project
+import pub.androidrubick.autotest.core.attachment.cmd.CmdUtil
+import pub.androidrubick.autotest.core.attachment.preds.PreconditionUtil
+import pub.androidrubick.autotest.core.attachment.property.PropertyUtil
 import pub.androidrubick.autotest.core.util.ATMLog
 import pub.androidrubick.autotest.core.util.ATMLogLevel;
 
@@ -19,26 +22,41 @@ import pub.androidrubick.autotest.core.util.ATMLogLevel;
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class ATM {
 
-    public static final String INJECT_NAME = "atm";
+    public static final String INJECT_NAME = "atm"
 
-    public static ATM init(@NonNull Project project) {
-        ATM atm;
-        if ((atm = (ATM) project.extensions.findByName(INJECT_NAME)) != null) {
-            return atm;
+    public static ATM init(@NonNull Project myProject) {
+        Project rootProject = BaseATMPlugin.getRootProject(myProject)
+
+        if (rootProject.extensions.findByName(INJECT_NAME) != null) {
+            return fromProject(myProject)
         }
 
-        ATMLog.init(project.rootProject)
+        ATMLog.init(rootProject)
 
-        atm = project.extensions.create(INJECT_NAME, ATM, project);
-//        project.ext."$INJECT_NAME" = new ATM(project)
-        project.with {
-            atm.log("$INJECT_NAME initialized")
+        rootProject.allprojects { project ->
+            ATM myAtm = project.extensions.create(INJECT_NAME, ATM, project)
+//            project.ext."$INJECT_NAME" = new ATM(project)
+            myAtm.log("$INJECT_NAME of project `${project.name}` initialized")
         }
-        return atm;
+        return fromProject(myProject)
+    }
+
+    /**
+     * get the {@link ATM} implementation from target project
+     * @param project target project
+     * @return the {@link ATM} implementation
+     * @since 1.0.0
+     */
+    public static ATM fromProject(@NonNull Project project) {
+        return project."$INJECT_NAME"
     }
 
     private final ATMContext mContext
     private ATMLogLevel mLogLevel = ATMLogLevel.Debug
+
+    public final CmdUtil cmd
+    public final PropertyUtil prop
+    public final PreconditionUtil preds
 
     /**
      * log debug
@@ -56,6 +74,10 @@ public class ATM {
         this.logW = createLogClosure(ATMLogLevel.Warn)
         this.logE = createLogClosure(ATMLogLevel.Error)
         this.log = this.logD
+
+        this.cmd = new CmdUtil(this.mContext)
+        this.prop = new PropertyUtil(this.mContext)
+        this.preds = new PreconditionUtil(this.mContext)
     }
 
     public final ATMContext getContext() {

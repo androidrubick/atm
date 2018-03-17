@@ -8,25 +8,17 @@ import pub.androidrubick.autotest.core.ATMContext
 @SuppressWarnings(["GroovyUnusedDeclaration", "UnnecessaryQualifiedReference"])
 public abstract class ATMLog {
 
-    private static boolean sInitialized
+    public static final String IMPL_INJECT_NAME = "ATMLogger"
 
     /**
      * root project
      * @param rootProject root project
      */
     static synchronized void init(@NonNull Project rootProject) {
-        if (sInitialized) {
-            return
+        int longestTagLen = rootProject.allprojects.collect { it.name ? it.name.length() : 0 }.max()
+        rootProject.allprojects { project ->
+            project.ext."$IMPL_INJECT_NAME" = new ATMLogImpl(project, longestTagLen)
         }
-
-        rootProject.with {
-            int longestTagLen = rootProject.allprojects.collect { it.name ? it.name.length() : 0 }.max()
-            allprojects {
-                project.ext.ATMLogger = new ATMLogImpl(project, longestTagLen)
-            }
-        }
-
-        sInitialized = true
 
         ATAndroidLog.use(fromProject(rootProject))
     }
@@ -45,7 +37,7 @@ public abstract class ATMLog {
      * @since 1.0.0
      */
     public static ATMLog fromProject(@NonNull Project project) {
-        return project.ext.ATMLogger
+        return project.ext."$IMPL_INJECT_NAME"
     }
 
     /**

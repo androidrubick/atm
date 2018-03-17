@@ -40,4 +40,8 @@ public abstract class BaseATMPlugin implements Plugin<Project> {
     public static boolean isRootProject(@NonNull Project project) {
         return project.rootProject == null || project.rootProject == project;
     }
+
+    public static Project getRootProject(@NonNull Project project) {
+        return project.rootProject ?: project
+    }
 }
