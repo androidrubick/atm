@@ -1,7 +1,6 @@
 package pub.androidrubick.autotest.core
 
 import android.support.annotation.NonNull
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
@@ -11,10 +10,10 @@ import org.gradle.api.Project
  * @since 1.0.0
  */
 @SuppressWarnings(["GroovyUnusedDeclaration", "WeakerAccess"])
-public class ATMPlugin implements Plugin<Project> {
+public class ATMPlugin extends BaseATMPlugin {
 
     @Override
-    public void apply(@NonNull Project project) {
-    }
+    protected void applyMe(@NonNull Project project, @NonNull ATM atm) {
 
+    }
 }
