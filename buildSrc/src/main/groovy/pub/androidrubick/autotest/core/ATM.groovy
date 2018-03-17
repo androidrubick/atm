@@ -1,13 +1,13 @@
-package pub.androidrubick.autotest.core;
+package pub.androidrubick.autotest.core
 
-import android.support.annotation.NonNull;
+import android.support.annotation.NonNull
 
 import org.gradle.api.Project
 import pub.androidrubick.autotest.core.attachment.cmd.CmdUtil
 import pub.androidrubick.autotest.core.attachment.preds.PreconditionUtil
 import pub.androidrubick.autotest.core.attachment.property.PropertyUtil
 import pub.androidrubick.autotest.core.util.ATMLog
-import pub.androidrubick.autotest.core.util.ATMLogLevel;
+import pub.androidrubick.autotest.core.util.ATMLogLevel
 
 /**
  * 当 apply 任何插件时，会尝试向{@link Project project}注入名为`atm`的对象；
