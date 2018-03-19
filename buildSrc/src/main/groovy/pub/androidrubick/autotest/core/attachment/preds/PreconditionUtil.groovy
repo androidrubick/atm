@@ -2,7 +2,7 @@ package pub.androidrubick.autotest.core.attachment.preds
 
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.BaseAttachment
-import pub.androidrubick.autotest.util.Utils
+import pub.androidrubick.autotest.core.util.Utils
 
 @SuppressWarnings(["GroovyUnusedDeclaration", "GrMethodMayBeStatic"])
 public class PreconditionUtil extends BaseAttachment {

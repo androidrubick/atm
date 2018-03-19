@@ -3,7 +3,7 @@ package pub.androidrubick.autotest.android.support.cmd
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.NonNull
-import pub.androidrubick.autotest.util.Utils
+import pub.androidrubick.autotest.core.util.Utils
 
 /**
  * <p>

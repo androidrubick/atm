@@ -1,4 +1,4 @@
-package pub.androidrubick.autotest.util
+package pub.androidrubick.autotest.core.util
 
 import java.lang.reflect.Array
 

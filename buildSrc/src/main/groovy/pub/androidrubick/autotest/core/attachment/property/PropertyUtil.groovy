@@ -30,14 +30,23 @@ public class PropertyUtil extends BaseAttachment {
     }
 
     /**
-     * 如果目标属性与`true`等价，比如值为1，true等，返回true
+     * 如果<b>目标属性值</b>与`true`等价，比如值为1，true等，返回true
      * @param name property name
-     * @param defVal default value
-     * @return 如果目标属性与`true`等价，比如值为1，true等，返回true
+     * @return 如果<b>目标属性值</b>与`true`等价，比如值为1，true等，返回true
      * @since 1.0.0
      */
-    public boolean valueTrue(String name) {
-        return ['1', 'true'].contains(String.valueOf(this.value(name)))
+    public boolean valueTrue(String value) {
+        return ['1', 'true'].contains(String.valueOf(value?.toLowerCase()))
+    }
+
+    /**
+     * 如果<b>目标属性</b>与`true`等价，比如值为1，true等，返回true
+     * @param name property name
+     * @return 如果<b>目标属性</b>与`true`等价，比如值为1，true等，返回true
+     * @since 1.0.0
+     */
+    public boolean isTrue(String name) {
+        return valueTrue(String.valueOf(this.value(name)))
     }
 
 }
