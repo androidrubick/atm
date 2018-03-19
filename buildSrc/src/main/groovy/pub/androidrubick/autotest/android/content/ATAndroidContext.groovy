@@ -32,6 +32,6 @@ public class ATAndroidContext extends Context {
 
     @Override
     public String getPackageName() {
-        return null;
+        return null
     }
 }

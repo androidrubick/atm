@@ -16,7 +16,7 @@ import pub.androidrubick.autotest.core.ATMContext
 public class BaseAttachment {
 
     private final ATMContext mContext
-    protected BaseAttachment(ATMContext context) {
+    public BaseAttachment(ATMContext context) {
         mContext = context
     }
 

@@ -27,14 +27,14 @@ public abstract class BaseATMPlugin implements Plugin<Project> {
 
     @CallSuper
     protected void beforeApply(@NonNull Project project, @NonNull ATM atm) {
-        atm.logI("${this.class.simpleName} Applying for ${project.name}")
+        atm.logI("${this.class.simpleName} Applying for `${project.name}`")
     }
 
     protected abstract void applyMe(@NonNull Project project, @NonNull ATM atm);
 
     @CallSuper
     protected void afterApplied(@NonNull Project project, @NonNull ATM atm) {
-        atm.logI("${this.class.simpleName} Applied for ${project.name}")
+        atm.logI("${this.class.simpleName} Applied for `${project.name}`")
     }
 
     public static boolean isRootProject(@NonNull Project project) {

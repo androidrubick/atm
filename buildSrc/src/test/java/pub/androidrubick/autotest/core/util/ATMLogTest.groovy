@@ -32,6 +32,8 @@ class ATMLogTest extends GroovyTestCase {
 
         Log.i("yytest", aaa())
         Log.i("yytest", aaa.aaa)
+
+        println new File('./').absolutePath
     }
 
 }

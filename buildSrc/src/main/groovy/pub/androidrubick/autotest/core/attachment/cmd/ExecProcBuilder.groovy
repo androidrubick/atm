@@ -91,4 +91,11 @@ public class ExecProcBuilder extends BaseAttachment {
             atm.log('>>>>>>>>>>>>>>>>>>>>>>>>> Process print end <<<<<<<<<<<<<<<<<<<<<<<<<\n')
         }
     }
+
+    @Override
+    public String toString() {
+        return "ExecProcBuilder{" +
+                "commands=" + commands +
+                '}'
+    }
 }

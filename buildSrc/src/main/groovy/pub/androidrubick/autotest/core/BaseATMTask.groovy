@@ -20,6 +20,6 @@ public abstract class BaseATMTask extends DefaultTask {
      * provide `atm` for tasks
      */
     public final ATM getAtm() {
-        return project.atm
+        return ATM.fromProject(project)
     }
 }

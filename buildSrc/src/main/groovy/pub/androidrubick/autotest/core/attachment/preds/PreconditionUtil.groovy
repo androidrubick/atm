@@ -54,4 +54,12 @@ public class PreconditionUtil extends BaseAttachment {
         return target
     }
 
+    public File isDir(File target, String label = '') {
+        this.file(target, label)
+        if (!target.isDirectory()) {
+            throw new PreconditionError("$label: $target is Not a Dir")
+        }
+        return target
+    }
+
 }
