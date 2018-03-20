@@ -3,7 +3,6 @@ package pub.androidrubick.autotest.android.attachment.cmd
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.core.ATMContext
-import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
 import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
 
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
@@ -32,7 +31,7 @@ class AdbUtil extends BaseAndroidAttachment {
     }
 
     public ExecResult rmRemoteTmpFiles() {
-        return shell("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*").exec()
+        return androidSdk.adbShell.builder("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*").exec()
                 .checkSuccess('rmRemoteTmpFiles')
     }
 
@@ -64,10 +63,6 @@ class AdbUtil extends BaseAndroidAttachment {
         def device = deviceInfo.extras.device = androidSdk.configuration.targetDevice
         deviceInfo.extras.serialNumber = device?.serialNumber
         return deviceInfo
-    }
-
-    private ExecProcBuilder shell(String command) {
-        return androidSdk.adbShell.builder(command)
     }
 
     private String prop(String name) {

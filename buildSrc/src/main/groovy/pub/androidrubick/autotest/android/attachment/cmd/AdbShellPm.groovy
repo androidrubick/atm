@@ -13,12 +13,16 @@ class AdbShellPm extends BaseAndroidAttachment {
         super(context)
     }
 
+    public ExecProcBuilder builder(String command) {
+        return androidSdk.adbShell.builder("pm $command")
+    }
+
     public ExecProcBuilder install(InstallInfo installInfo) {
-        return androidSdk.adbShell.pm("install ${installInfo.toCmdString()}")
+        return builder("install ${installInfo.toCmdString()}")
     }
 
     public ExecProcBuilder uninstall(UninstallInfo uninstallInfo) {
-        return androidSdk.adbShell.pm("uninstall ${uninstallInfo.toCmdString()}")
+        return builder("uninstall ${uninstallInfo.toCmdString()}")
     }
 
 }

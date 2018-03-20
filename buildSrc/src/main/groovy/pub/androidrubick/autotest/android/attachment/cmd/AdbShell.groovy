@@ -28,22 +28,6 @@ class AdbShell extends BaseAndroidAttachment {
         return androidSdk.adb.builder("shell $command")
     }
 
-    public ExecProcBuilder am(String command) {
-        return builder("am $command")
-    }
-
-    public ExecProcBuilder pm(String command) {
-        return builder("pm $command")
-    }
-
-    public ExecProcBuilder uiautomator(String command) {
-        return builder("uiautomator $command")
-    }
-
-    public ExecProcBuilder input(String command) {
-        return builder("input $command")
-    }
-
     /**
      * @return multi-line result like:
      * [ro.product.board]: [MSM8974]

@@ -17,12 +17,12 @@ class AdbShellUiAutomator extends BaseAndroidAttachment {
         super(context)
     }
 
-    private ExecProcBuilder uiautomator(String command) {
-        return androidSdk.adbShell.uiautomator(command)
+    public ExecProcBuilder builder(String command) {
+        return androidSdk.adbShell.builder("uiautomator $command")
     }
 
     public ExecProcBuilder dump() {
-        return uiautomator('dump')
+        return builder('dump')
     }
 
     /**
