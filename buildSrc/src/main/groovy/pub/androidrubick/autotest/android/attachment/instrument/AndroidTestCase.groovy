@@ -1,18 +1,30 @@
 package pub.androidrubick.autotest.android.attachment.instrument
 
+import android.content.ComponentName
+
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class AndroidTestCase {
 
-    public final InstrumentInfo instrumentInfo
+    public final ComponentName instrumentInfo
     public final InstrumentTestClz testClz
     public boolean debug
     /**
      * --no-window-animation
      */
     public boolean notWindowAnim
-    public AndroidTestCase(InstrumentInfo instrumentInfo, InstrumentTestClz testClz) {
+    public AndroidTestCase(ComponentName instrumentInfo, InstrumentTestClz testClz) {
         this.instrumentInfo = instrumentInfo
         this.testClz = testClz
+    }
+
+    public AndroidTestCase setDebug(boolean debug) {
+        this.debug = debug
+        return this
+    }
+
+    public AndroidTestCase setNotWindowAnim(boolean val) {
+        this.notWindowAnim = val
+        return this
     }
 
     @Override

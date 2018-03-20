@@ -5,7 +5,8 @@ import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
 import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
 
-import static pub.androidrubick.autotest.core.util.CmdResultUtils.*
+import static pub.androidrubick.autotest.core.util.CmdResultUtils.filterOneLineValue
+import static pub.androidrubick.autotest.core.util.CmdResultUtils.nonEmptyLines
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 
 @SuppressWarnings("GroovyUnusedDeclaration")
@@ -13,22 +14,34 @@ class AdbShell extends BaseAndroidAttachment {
 
     public final AdbShellAm am
     public final AdbShellPm pm
+    public final AdbShellUiAutomator uiautomator
+    public final AdbShellInput input
     AdbShell(ATMContext context) {
         super(context)
         am = new AdbShellAm(context)
         pm = new AdbShellPm(context)
+        uiautomator = new AdbShellUiAutomator(context)
+        input = new AdbShellInput(context)
     }
 
-    private ExecProcBuilder shell(String command) {
-        return androidSdk.cmd.adb.shell(command)
+    public ExecProcBuilder builder(String command) {
+        return androidSdk.adb.builder("shell $command")
     }
 
     public ExecProcBuilder am(String command) {
-        return shell("am $command")
+        return builder("am $command")
     }
 
     public ExecProcBuilder pm(String command) {
-        return shell("pm $command")
+        return builder("pm $command")
+    }
+
+    public ExecProcBuilder uiautomator(String command) {
+        return builder("uiautomator $command")
+    }
+
+    public ExecProcBuilder input(String command) {
+        return builder("input $command")
     }
 
     /**
@@ -39,7 +52,7 @@ class AdbShell extends BaseAndroidAttachment {
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */
     public Map props(String grep = null) {
-        ExecResult devicePropsResult = shell("getprop ${!isEmpty(grep) ? "| grep $grep" : ''}").exec()
+        ExecResult devicePropsResult = builder("getprop ${!isEmpty(grep) ? "| grep $grep" : ''}").exec()
         devicePropsResult.checkSuccess('deviceProps')
         if (isEmpty(devicePropsResult.text)) {
             return [:]
@@ -62,7 +75,7 @@ class AdbShell extends BaseAndroidAttachment {
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */
     public String prop(String name) {
-        def devicePropResult = shell("getprop $name").exec()
+        def devicePropResult = builder("getprop $name").exec()
         return isEmpty(devicePropResult.text) ? '' : filterOneLineValue(devicePropResult.text)
     }
 

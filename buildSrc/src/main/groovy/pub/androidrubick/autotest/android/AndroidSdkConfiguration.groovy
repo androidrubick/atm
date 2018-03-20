@@ -44,6 +44,7 @@ class AndroidSdkConfiguration extends BaseAttachment {
     private AdbDevice mTargetDevice
     public AndroidSdkConfiguration setTargetDevice(AdbDevice device) {
         mTargetDevice = device
+        return this
     }
 
     public AdbDevice getTargetDevice() {

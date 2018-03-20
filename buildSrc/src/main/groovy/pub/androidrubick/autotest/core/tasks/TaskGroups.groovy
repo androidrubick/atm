@@ -1,4 +1,4 @@
-package pub.androidrubick.autotest.android.tasks
+package pub.androidrubick.autotest.core.tasks
 
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedDeclaration"])
 abstract class TaskGroups {
@@ -19,5 +19,9 @@ abstract class TaskGroups {
      * launch app / test app on devices
      */
     static final String GROUP_LAUNCH = 'launch ATM'
+    /**
+     * launch app / test app on devices
+     */
+    static final String GROUP_UPLOAD = 'upload ATM'
 
 }

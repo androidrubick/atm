@@ -23,6 +23,10 @@ public class AndroidPlugin extends BaseATMPlugin {
             tasks.create('collectAndroidEnv', CollectAndroidEnvTask)
             tasks.create('collectAndroidDevice',  CollectAndroidDeviceTask).dependsOn('collectAndroidEnv')
 
+            AppArchiveType.allAvailableOf(AppPlatform.Android).each { AppArchiveType type ->
+                tasks.create('collect' + Utils.capitalize(type.name), CollectAndroidAppTask)
+            }
+
 //            tasks.create('dumpUI', DumpUITask)
 //            tasks.create('installApk', InstallApkTask)
 //            tasks.create('launchApp', LaunchAppTask)

@@ -1,10 +1,9 @@
-package pub.androidrubick.autotest.core;
+package pub.androidrubick.autotest.core
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
+import android.support.annotation.CallSuper
+import android.support.annotation.NonNull
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 /**
  * Base task used in this lib.
@@ -18,11 +17,11 @@ public abstract class BaseATMPlugin implements Plugin<Project> {
 
     @Override
     public void apply(@NonNull Project project) {
-        ATM atm = ATM.init(project);
+        ATM atm = ATM.init(project)
 
-        beforeApply(project, atm);
-        applyMe(project, atm);
-        afterApplied(project, atm);
+        beforeApply(project, atm)
+        applyMe(project, atm)
+        afterApplied(project, atm)
     }
 
     @CallSuper
@@ -30,7 +29,7 @@ public abstract class BaseATMPlugin implements Plugin<Project> {
         atm.logI("${this.class.simpleName} Applying for `${project.name}`")
     }
 
-    protected abstract void applyMe(@NonNull Project project, @NonNull ATM atm);
+    protected abstract void applyMe(@NonNull Project project, @NonNull ATM atm)
 
     @CallSuper
     protected void afterApplied(@NonNull Project project, @NonNull ATM atm) {
@@ -38,7 +37,7 @@ public abstract class BaseATMPlugin implements Plugin<Project> {
     }
 
     public static boolean isRootProject(@NonNull Project project) {
-        return project.rootProject == null || project.rootProject == project;
+        return project.rootProject == null || project.rootProject == project
     }
 
     public static Project getRootProject(@NonNull Project project) {

@@ -2,14 +2,13 @@ package pub.androidrubick.autotest.android
 
 import android.support.annotation.NonNull
 import org.gradle.api.Project
+import pub.androidrubick.autotest.android.attachment.cmd.Adb
+import pub.androidrubick.autotest.android.attachment.cmd.AdbShell
+import pub.androidrubick.autotest.android.attachment.cmd.AdbUtil
 import pub.androidrubick.autotest.android.attachment.cmd.AndroidSDKCmd
-import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.BaseAttachment
-import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
-
-import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class AndroidSdk extends BaseAttachment {
@@ -55,75 +54,6 @@ public class AndroidSdk extends BaseAttachment {
 //
 //        vsri.log(project.ext.properties)
 //    }
-
-    /**
-     * clear all android sdk or cmd line configurations
-     *
-     * @since 1.0.0
-     */
-    public void clearConfigurations() {
-        ANDROID_SDK_CMD_PREFIX = ''
-        ANDROID_SDK_TOOLS_CMD_PREFIX = ''
-        ANDROID_SDK_TOOLS_BIN_CMD_PREFIX = ''
-        ANDROID_SDK_PLATFORM_TOOLS_CMD_PREFIX = ''
-        ADB_COMMAND = 'adb'
-        mTargetDevice = null
-    }
-
-    // ===========================================================================
-    // 定义android_sdk 命令行调用的一些基础方法
-    // vsri_cmd_builder
-    // ===========================================================================
-
-//    public final ExecProcBuilder platform_tools(String command) {
-//        return vsri.cmd.builder("${ANDROID_SDK_PLATFORM_TOOLS_CMD_PREFIX}$command")
-//    }
-//
-//    public final ExecProcBuilder adb(String command) {
-//        return this.platform_tools("${ADB_COMMAND}${command}")
-//    }
-//
-//    public final ExecProcBuilder adb_shell(String command) {
-//        return this.adb("shell $command")
-//    }
-//
-//    // `$ANDROID_HOME/tools/`路径下的命令、工具等
-//    /**
-//     * 会前置`$ANDROID_HOME/tools/`路径，这样可以执行路径下的命令；
-//     *
-//     * 比如：
-//     * android
-//     * emulator
-//     * emulator-check
-//     * monitor等
-//     */
-//    public final ExecProcBuilder tools(String command) {
-//        return vsri.cmd.builder("${ANDROID_SDK_TOOLS_CMD_PREFIX}$command")
-//    }
-//
-//    public final ExecProcBuilder android(String command) {
-//        return this.tools("android $command")
-//    }
-//
-//    // `$ANDROID_HOME/tools/bin`路径下的命令、工具等
-//    /**
-//     * 会前置`$ANDROID_HOME/tools/bin`路径，这样可以执行路径下的命令；
-//     *
-//     * 比如：
-//     * apkanalyzer
-//     * lint
-//     * monkeyrunner
-//     * screenshot2
-//     * sdkmanager
-//     * uiautomatorviewer等
-//     */
-//    public final ExecProcBuilder tools_bin(String command) {
-//        return vsri.cmd.builder("${ANDROID_SDK_TOOLS_BIN_CMD_PREFIX}$command")
-//    }
-//
-//    public final ExecProcBuilder apkanalyzer(String command) {
-//        return this.tools_bin("apkanalyzer $command")
-//    }
 //
 //    public final InstrumentArchiveUtil getInstrumentArchive() {
 //        return InstrumentArchiveUtil.instance(context)
@@ -131,9 +61,15 @@ public class AndroidSdk extends BaseAttachment {
 
     private AndroidSdkConfiguration mAndroidSdkConfiguration
     public final AndroidSDKCmd cmd
+    public final Adb adb
+    public final AdbShell adbShell
+    public final AdbUtil adbUtil
     public AndroidSdk(ATMContext context) {
         super(context)
         cmd = new AndroidSDKCmd(context)
+        adb = cmd.adb
+        adbShell = adb.shell
+        adbUtil = adb.util
     }
 
     public AndroidSdkConfiguration getConfiguration() {

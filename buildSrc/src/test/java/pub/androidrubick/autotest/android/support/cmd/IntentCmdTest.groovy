@@ -4,7 +4,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import pub.androidrubick.autotest.core.app.AppArchiveType
+import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
+import pub.androidrubick.autotest.core.attachment.app.AppPlatform
 
 /**
  * {@doc}
@@ -36,7 +37,7 @@ class IntentCmdTest extends GroovyTestCase {
     }
 
     void test() {
-        println AppArchiveType.allAvailableOf('android')
+        println AppArchiveType.allAvailableOf(AppPlatform.Android)
         println AppArchiveType.allAvailableOf(null)
     }
 }

@@ -1,6 +1,7 @@
 package pub.androidrubick.autotest.android.tasks
 
 import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.core.tasks.TaskGroups
 
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedDeclaration"])
 class CollectAndroidDeviceTask extends BaseAndroidTask {
@@ -11,10 +12,14 @@ class CollectAndroidDeviceTask extends BaseAndroidTask {
 
     @TaskAction
     public void collect() {
-        def devices = androidSdk.cmd.adb.devices()
-        atm.preds.nonEmpty(devices, 'android devices')
+        def devices = atm.preds.nonEmpty(androidSdk.adb.devices(), 'android devices')
 
-        androidSdk.configuration.devices = devices
+        androidSdk.configuration.with {
+            // set all
+            setDevices(devices)
+            // set default
+            setTargetDevice(devices[0])
+        }
     }
 
 }

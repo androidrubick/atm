@@ -21,7 +21,8 @@ public class AdbDevice {
      * 2、device
      * 3、no device
      */
-    public String type
+    public String state
+
     /**
      * 额外的信息
      */
@@ -30,9 +31,26 @@ public class AdbDevice {
     AdbDevice() {
     }
 
-    AdbDevice(String serialNumber, String type = '') {
+    AdbDevice(String serialNumber, String state = '') {
         this.serialNumber = serialNumber
-        this.type = type
+        this.state = state
+    }
+
+    public boolean isOnline() {
+        return 'device'.equalsIgnoreCase(this.state)
+    }
+
+    @Override
+    int hashCode() {
+        return Objects.hashCode(serialNumber)
+    }
+
+    @Override
+    boolean equals(Object o) {
+        if (o instanceof AdbDevice) {
+            return o.serialNumber == this.serialNumber
+        }
+        return false
     }
 
     @Override
@@ -44,8 +62,14 @@ public class AdbDevice {
                 '}';
     }
 
-    boolean asBoolean(){
+    boolean asBoolean() {
         !Utils.isEmpty(serialNumber)
+    }
+
+    public static List<AdbDevice> filterOnline(List<AdbDevice> devices) {
+        return devices?.findAll { AdbDevice device ->
+            device?.online
+        } ?: []
     }
 
 }

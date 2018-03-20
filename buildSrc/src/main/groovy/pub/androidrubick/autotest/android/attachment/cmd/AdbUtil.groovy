@@ -32,8 +32,8 @@ class AdbUtil extends BaseAndroidAttachment {
     }
 
     public ExecResult rmRemoteTmpFiles() {
-        return androidSdk.cmd.adb.shell("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*")
-                .exec().checkSuccess('rmRemoteTmpFiles')
+        return shell("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*").exec()
+                .checkSuccess('rmRemoteTmpFiles')
     }
 
     /**
@@ -66,16 +66,12 @@ class AdbUtil extends BaseAndroidAttachment {
         return deviceInfo
     }
 
-    private ExecProcBuilder adb(String command) {
-        return androidSdk.cmd.adb(command)
-    }
-
     private ExecProcBuilder shell(String command) {
-        return androidSdk.cmd.adb.shell(command)
+        return androidSdk.adbShell.builder(command)
     }
 
     private String prop(String name) {
-        return androidSdk.cmd.adb.shell.prop(name)
+        return androidSdk.adbShell.prop(name)
     }
 
 }

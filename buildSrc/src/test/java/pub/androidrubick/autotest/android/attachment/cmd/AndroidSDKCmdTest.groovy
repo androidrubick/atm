@@ -21,26 +21,25 @@ class AndroidSDKCmdTest extends GroovyTestCase {
         project.pluginManager.apply(AndroidPlugin.class)
 
         androidSdk = AndroidSdk.fromProject(project)
-
     }
 
     void testAdb() {
-        println androidSdk.cmd.adb('version')
-        println androidSdk.cmd.adb.version()
-        println androidSdk.cmd.adb.devices()
+        println androidSdk.cmd.adb.builder('version')
+//        println androidSdk.cmd.adb.version()
+//        println androidSdk.cmd.adb.devices()
     }
 
     void testAdbShell() {
         println androidSdk.cmd.adb.shell
-        println androidSdk.cmd.adb.shell('ls -la')
-        println androidSdk.cmd.adb.shell.pm('list packages')
-        println androidSdk.cmd.adb.shell.pm('list packages com.taobao.taobao').exec()
-        Intent intent = new Intent("test.ACTION")
-        println androidSdk.cmd.adb.shell.am.broadcast(intent)
-        println androidSdk.cmd.adb.shell.am.broadcast(intent).exec()
-
-        println androidSdk.cmd.adb.util.rmRemoteTmpFiles()
-        println androidSdk.cmd.adb.util.info
+//        println androidSdk.cmd.adb.shell('ls -la')
+//        println androidSdk.cmd.adb.shell.pm('list packages')
+//        println androidSdk.cmd.adb.shell.pm('list packages com.taobao.taobao').exec()
+//        Intent intent = new Intent("test.ACTION")
+//        println androidSdk.cmd.adb.shell.am.broadcast(intent)
+//        println androidSdk.cmd.adb.shell.am.broadcast(intent).exec()
+//
+//        println androidSdk.cmd.adb.util.rmRemoteTmpFiles()
+//        println androidSdk.cmd.adb.util.info
 
 //        println androidSdk.cmd.adb.shell.props()
 //        println androidSdk.cmd.adb.shell.prop('ro.product.brand')

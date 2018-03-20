@@ -34,6 +34,8 @@ class ATMLogTest extends GroovyTestCase {
         Log.i("yytest", aaa.aaa)
 
         println new File('./').absolutePath
+        println Utils.capitalize('at')
+        println Utils.capitalize('yytest')
     }
 
 }

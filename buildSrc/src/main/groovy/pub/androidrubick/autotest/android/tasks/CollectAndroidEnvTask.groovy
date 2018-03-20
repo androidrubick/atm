@@ -1,6 +1,7 @@
 package pub.androidrubick.autotest.android.tasks
 
 import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.core.tasks.TaskGroups
 
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 

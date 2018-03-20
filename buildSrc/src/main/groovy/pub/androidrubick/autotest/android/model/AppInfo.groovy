@@ -1,5 +1,7 @@
 package pub.androidrubick.autotest.android.model
 
+import android.content.ComponentName
+
 /**
  * simple model with app information
  *
@@ -12,11 +14,11 @@ public class AppInfo {
     public String versionName
     public String versionCode
 
-    public LaunchInfo launchInfo
+    public ComponentName launchInfo
 
     public AppInfo() {}
 
-    public AppInfo(String pkg, String versionName, String versionCode, LaunchInfo launchInfo = null) {
+    public AppInfo(String pkg, String versionName, String versionCode, ComponentName launchInfo = null) {
         this.pkg = pkg
         this.versionName = versionName
         this.versionCode = versionCode
@@ -26,7 +28,10 @@ public class AppInfo {
     @Override
     public String toString() {
         return "AppInfo{" +
-                "launchInfo=" + launchInfo +
+                "pkg='" + pkg + '\'' +
+                ", versionName='" + versionName + '\'' +
+                ", versionCode='" + versionCode + '\'' +
+                ", launchInfo=" + launchInfo +
                 '}';
     }
 }

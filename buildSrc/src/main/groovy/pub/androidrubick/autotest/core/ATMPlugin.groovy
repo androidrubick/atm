@@ -16,4 +16,5 @@ public class ATMPlugin extends BaseATMPlugin {
     protected void applyMe(@NonNull Project project, @NonNull ATM atm) {
 
     }
+
 }

@@ -66,10 +66,6 @@ public class IntentCmd {
         return intentFields.join(' ')
     }
 
-    public static String intentExtrasParamString(@NonNull Intent extras) {
-        return extrasParamString(extras.extras)
-    }
-
     private static final Map<Class, Closure> sExtraTypeClosures = [:]
     static {
         // TODO: intent -> cmd string，此处的数组的处理有待修正
@@ -97,6 +93,17 @@ public class IntentCmd {
         sExtraTypeClosures.put(  boolean[].class, { String key, boolean[] val -> "--es \"$key\" \"${val.join(',')}\""})
 
         sExtraTypeClosures.put(ArrayList.class, { String key, ArrayList val -> "--es \"$key\" \"${val.join(',')}\""})
+    }
+
+    public static String toCmdString(Intent intent) {
+        if (intent == null) {
+            return ''
+        }
+        return new IntentCmd(intent).toCmdString()
+    }
+
+    public static String intentExtrasParamString(@NonNull Intent extras) {
+        return extrasParamString(extras.extras)
     }
 
     public static String extrasParamString(Bundle extras) {

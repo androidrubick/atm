@@ -6,7 +6,9 @@ import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
 import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
-import pub.androidrubick.autotest.core.util.CmdResultUtils
+
+import static pub.androidrubick.autotest.core.util.CmdResultUtils.nonEmptyLines
+import static pub.androidrubick.autotest.core.util.CmdResultUtils.nonEmptyValuesOfLine
 
 @SuppressWarnings("GroovyUnusedDeclaration")
 class Adb extends BaseAndroidAttachment {
@@ -19,50 +21,50 @@ class Adb extends BaseAndroidAttachment {
         util = new AdbUtil(context)
     }
 
-    private ExecProcBuilder adb(String cmd) {
-        return androidSdk.cmd.adb(cmd)
+    private String getAdbCmd() {
+        AdbDevice device = androidSdk.configuration.targetDevice
+        return device ? "adb -s ${device.serialNumber}" : 'adb'
+    }
+
+    public ExecProcBuilder builder(String cmd) {
+        return androidSdk.cmd.platform_tools("$adbCmd $cmd")
     }
 
     @NonNull
     public ExecResult version() {
-        return adb('version').exec().checkNonEmptyText('adb version')
-    }
-
-    @NonNull
-    public ExecProcBuilder shell(String command) {
-        return adb("shell $command")
+        return builder('version').exec().checkNonEmptyText('adb version')
     }
 
     @NonNull
     public ExecResult pullFile(File remote, File local) {
-        return adb("pull ${remote.absolutePath} ${local.absolutePath}").exec()
+        return builder("pull ${remote.absolutePath} ${local.absolutePath}").exec()
                 .checkNonEmptyText('pullFile')
     }
 
     @NonNull
     public ExecResult pushFile(File local, File remote) {
-        return adb("push ${local.absolutePath} ${remote.absolutePath}").exec()
+        return builder("push ${local.absolutePath} ${remote.absolutePath}").exec()
                 .checkNonEmptyText('pushFile')
     }
 
     @NonNull
     public ExecResult startServer() {
-        return adb('start-server').exec().checkSuccess('startServer')
+        return builder('start-server').exec().checkSuccess('startServer')
     }
 
     @NonNull
     public ExecResult killServer() {
-        return adb('kill-server').exec().checkSuccess('killServer')
+        return builder('kill-server').exec().checkSuccess('killServer')
     }
 
     @NonNull
     public List<AdbDevice> devices() {
-        def devicesResult = adb('devices').exec().checkSuccess('devices')
-        List<String> lines = CmdResultUtils.nonEmptyLines(devicesResult.text)
+        def devicesResult = builder('devices').exec().checkSuccess('devices')
+        List<String> lines = nonEmptyLines(devicesResult.text)
         if (lines?.size() > 1) {
             def lastIndex = lines.size() - 1
             return lines[1..lastIndex].collect {
-                def vals = CmdResultUtils.nonEmptyValuesOfLine(it)
+                def vals = nonEmptyValuesOfLine(it)
                 new AdbDevice(vals[0], vals[1])
             }
         }

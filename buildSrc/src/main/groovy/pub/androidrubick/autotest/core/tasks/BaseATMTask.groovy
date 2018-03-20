@@ -1,6 +1,7 @@
-package pub.androidrubick.autotest.core
+package pub.androidrubick.autotest.core.tasks
 
 import org.gradle.api.DefaultTask
+import pub.androidrubick.autotest.core.ATM
 
 /**
  * Base task used in this lib.

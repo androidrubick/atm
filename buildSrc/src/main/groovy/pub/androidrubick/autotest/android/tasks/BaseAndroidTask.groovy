@@ -1,7 +1,7 @@
 package pub.androidrubick.autotest.android.tasks
 
 import pub.androidrubick.autotest.android.AndroidSdk
-import pub.androidrubick.autotest.core.BaseATMTask
+import pub.androidrubick.autotest.core.tasks.BaseATMTask
 
 /**
  * Base task used in this lib.
@@ -14,7 +14,7 @@ import pub.androidrubick.autotest.core.BaseATMTask
 @SuppressWarnings("GroovyUnusedDeclaration")
 public abstract class BaseAndroidTask extends BaseATMTask {
 
-    public BaseTask() {
+    public BaseAndroidTask() {
     }
 
     /**
