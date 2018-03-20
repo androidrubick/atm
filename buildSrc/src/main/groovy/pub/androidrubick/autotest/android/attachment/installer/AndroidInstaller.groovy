@@ -1,7 +1,6 @@
-package pub.androidrubick.autotest.android.tasks.install
+package pub.androidrubick.autotest.android.attachment.installer
 
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
-import pub.androidrubick.autotest.android.attachment.installer.AndroidInstallHandlerFactory
 import pub.androidrubick.autotest.android.model.UninstallInfo
 import pub.androidrubick.autotest.core.ATMContext
 

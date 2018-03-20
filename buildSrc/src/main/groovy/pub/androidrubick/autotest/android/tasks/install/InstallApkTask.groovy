@@ -1,6 +1,7 @@
 package pub.androidrubick.autotest.android.tasks.install
 
 import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.android.attachment.installer.AndroidInstaller
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor

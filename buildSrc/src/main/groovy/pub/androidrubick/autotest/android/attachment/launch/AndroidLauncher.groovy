@@ -1,9 +1,8 @@
-package pub.androidrubick.autotest.android.tasks.launch
+package pub.androidrubick.autotest.android.attachment.launch
 
 import android.content.ComponentName
 import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
-import pub.androidrubick.autotest.android.attachment.launch.AndroidLaunchHandlerFactory
 import pub.androidrubick.autotest.core.ATMContext
 
 /**
