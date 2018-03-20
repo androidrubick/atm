@@ -17,4 +17,12 @@ class AndroidGradleProperties extends ATMGradleProperties {
     public static List<String> getAndroidHome() {
         return ['ANDROID_HOME', 'ANDROID_SDK_HOME', 'ANDROID_SDK_ROOT', 'ANDROID_SDK']
     }
+
+    /**
+     * 测试用例的
+     *
+     * @since 1.0.0
+     */
+    public static final String TEST_CASE = 'TEST_CASE'
+
 }

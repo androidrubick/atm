@@ -38,10 +38,7 @@ class AdbShellAm extends BaseAndroidAttachment {
     }
 
     public ExecProcBuilder startInstrument(@NonNull AndroidTestCase testCase) {
-        return builder("instrument -w -r -e debug ${testCase.debug} " +
-                "${testCase.notWindowAnim ? '--no-window-animation' : ''} " +
-                "-e class ${testCase.testClz.fullName} " +
-                "${testCase.instrumentInfo.flattenToString()}")
+        return builder("instrument -w -r ${testCase.toCmdString()}")
     }
 
 }

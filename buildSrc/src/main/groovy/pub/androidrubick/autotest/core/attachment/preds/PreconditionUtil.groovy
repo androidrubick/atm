@@ -15,7 +15,7 @@ public class PreconditionUtil extends BaseAttachment {
         if (project.hasProperty(name)) {
             return project.property(name)
         }
-        throw new PreconditionError("$label: Property `$name` Not Found")
+        throw new PreconditionError("$label: Property <$name> Not Found")
     }
 
     public <T>T nonNull(T obj, String label = '') {

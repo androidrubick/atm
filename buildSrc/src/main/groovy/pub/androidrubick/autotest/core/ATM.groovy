@@ -36,7 +36,7 @@ public class ATM {
         rootProject.allprojects { project ->
             ATM myAtm = project.extensions.create(INJECT_NAME, ATM, project)
 //            project.ext."$INJECT_NAME" = new ATM(project)
-            myAtm.log("$INJECT_NAME of project `${project.name}` initialized")
+            myAtm.log("$INJECT_NAME of project <${project.name}> initialized")
         }
         return fromProject(myProject)
     }

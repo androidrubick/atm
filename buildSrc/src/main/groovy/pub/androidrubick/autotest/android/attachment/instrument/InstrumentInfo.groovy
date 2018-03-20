@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.attachment.instrument
 
+import android.content.ComponentName
 import pub.androidrubick.autotest.android.model.AppInfo
 
 @SuppressWarnings("GroovyUnusedDeclaration")
@@ -19,12 +20,16 @@ public class InstrumentInfo {
         return appInfo.pkg
     }
 
+    public ComponentName asComponent() {
+        return ComponentName.createRelative(pkg, instrumentationClz)
+    }
+
     @Override
     public String toString() {
         return "InstrumentInfo{" +
                 "appInfo='" + appInfo + '\'' +
                 ", instrumentationClz='" + instrumentationClz + '\'' +
                 ", targetPkg='" + targetPkg + '\'' +
-                '}';
+                '}'
     }
 }

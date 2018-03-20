@@ -1,24 +1,28 @@
 package pub.androidrubick.autotest.android.attachment.instrument
 
 import android.content.ComponentName
+import pub.androidrubick.autotest.android.model.Cmdable
 
 @SuppressWarnings("GroovyUnusedDeclaration")
-public class AndroidTestCase {
+public class AndroidTestCase implements Cmdable {
+
+    public final Map<String, InstrumentTestable> testParams = [:];
+    {
+        testParams.debug = new InstrumentTestPair('debug', false)
+    }
 
     public final ComponentName instrumentInfo
-    public final InstrumentTestClz testClz
-    public boolean debug
     /**
      * --no-window-animation
      */
     public boolean notWindowAnim
     public AndroidTestCase(ComponentName instrumentInfo, InstrumentTestClz testClz) {
         this.instrumentInfo = instrumentInfo
-        this.testClz = testClz
+        testParams['class'] = new InstrumentTestPair('class', testClz)
     }
 
     public AndroidTestCase setDebug(boolean debug) {
-        this.debug = debug
+        testParams.debug.setValue(debug)
         return this
     }
 
@@ -30,10 +34,23 @@ public class AndroidTestCase {
     @Override
     public String toString() {
         return "AndroidTestCase{" +
-                "instrumentInfo=" + instrumentInfo +
-                ", testClz=" + testClz +
-                ", debug=" + debug +
+                "testParams=" + testParams +
                 ", notWindowAnim=" + notWindowAnim +
-                '}';
+                '}'
+    }
+
+    @Override
+    String toCmdString() {
+        def tokens = []
+        if (notWindowAnim) {
+            tokens << '--no-window-animation'
+        }
+
+        testParams.values().each { InstrumentTestable param ->
+            tokens << param.toCmdString()
+        }
+
+        tokens << instrumentInfo.flattenToString()
+        return tokens.join(' ')
     }
 }

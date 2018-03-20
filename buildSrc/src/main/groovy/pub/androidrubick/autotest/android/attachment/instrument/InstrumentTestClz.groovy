@@ -23,9 +23,24 @@ public class InstrumentTestClz {
 
     @Override
     public String toString() {
-        return "InstrumentTestClz{" +
-                "clzName='" + clzName + '\'' +
-                ", method='" + method + '\'' +
-                '}';
+        return fullName
     }
+
+    /**
+     * @param name 形如 'your.class' 或者 'your.class#your_method'
+     */
+    public static InstrumentTestClz parse(String name) {
+        if (Utils.isEmpty(name)) {
+            return new InstrumentTestClz('')
+        }
+        def clz = name
+        def method = null
+        int index = name.lastIndexOf('#')
+        if (index >= 0) {
+            clz = name.substring(0, index)
+            method = name.substring(index + 1)
+        }
+        return new InstrumentTestClz(clz, method)
+    }
+
 }

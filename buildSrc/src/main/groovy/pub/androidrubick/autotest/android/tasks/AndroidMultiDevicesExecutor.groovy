@@ -35,10 +35,10 @@ public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment 
             def targetDevice = androidSdk.configuration.devices.find { device ->
                 device.serialNumber == targetDeviceSN
             }
-            atm.preds.nonNull(targetDevice, "No device found of serial number `$targetDeviceSN`")
+            atm.preds.nonNull(targetDevice, "No device found of serial number <${targetDeviceSN}>")
             devices = [targetDevice]
         } else {
-            atm.logW("No target device Found by property `$PROP_TARGET_DEVICE`")
+            atm.logW("No target device Found by property <${PROP_TARGET_DEVICE}>")
             devices = androidSdk.configuration.devices
             atm.logW("So we use devices $devices")
         }
