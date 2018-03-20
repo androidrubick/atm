@@ -6,6 +6,7 @@ import pub.androidrubick.autotest.android.tasks.CollectAndroidDeviceTask
 import pub.androidrubick.autotest.android.tasks.CollectAndroidEnvTask
 import pub.androidrubick.autotest.android.tasks.app.AndroidArchiveCollector
 import pub.androidrubick.autotest.android.tasks.install.InstallApkTask
+import pub.androidrubick.autotest.android.tasks.install.UninstallApkTask
 import pub.androidrubick.autotest.android.tasks.launch.LaunchAndroidAppTask
 import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.BaseATMPlugin
@@ -42,13 +43,22 @@ public class AndroidPlugin extends BaseATMPlugin {
         }.each { ac ->
             String capitalizedTypeName = Utils.capitalize(ac.type.name)
             project.with {
-                tasks.create('install' + capitalizedTypeName, InstallApkTask.class) { task ->
-                    task.archiveCollector = ac
-                }.dependsOn(ac.collectAppTask.name)
+                def collectTaskName = ac.collectAppTask.name
+                def uninstallTaskName = 'uninstall' + capitalizedTypeName
+                def installTaskName = 'install' + capitalizedTypeName
+                def launchTaskName = 'launch' + capitalizedTypeName
 
-                tasks.create('launch' + capitalizedTypeName, LaunchAndroidAppTask.class) { task ->
+                tasks.create(uninstallTaskName, UninstallApkTask.class) { task ->
                     task.archiveCollector = ac
-                }.dependsOn('install' + capitalizedTypeName)
+                }.dependsOn(collectTaskName)
+
+                tasks.create(installTaskName, InstallApkTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(uninstallTaskName)
+
+                tasks.create(launchTaskName, LaunchAndroidAppTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(installTaskName)
             }
         }
     }

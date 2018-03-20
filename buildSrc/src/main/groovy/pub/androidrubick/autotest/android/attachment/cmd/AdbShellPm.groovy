@@ -30,15 +30,25 @@ class AdbShellPm extends BaseAndroidAttachment {
      */
     public boolean checkPkgInstalled(String pkg) {
         try {
-            def filterPkgResult = builder("list packages $pkg").exec()
-                    .checkNonEmptyText("checkPkgInstalled `$pkg` not installed")
-            atm.preds.isTrue(filterPkgResult.text.indexOf(pkg) >= 0, "checkPkgInstalled `$pkg` not installed")
+            ensurePkgInstalled(pkg)
             return true
         } catch (Throwable e) {
             atm.logE("checkPkgInstalled failed")
             atm.logE(Log.getStackTraceString(e))
             return false
         }
+    }
+
+    /**
+     * 保证指定的包名的应用已经安装
+     *
+     * @param pkg 包名
+     * @throws RuntimeException 当执行命令行发生错误时抛出异常
+     */
+    public void ensurePkgInstalled(String pkg) {
+        def filterPkgResult = builder("list packages $pkg").exec()
+                .checkNonEmptyText("ensurePkgInstalled <$pkg> not installed")
+        atm.preds.isTrue(filterPkgResult.text.indexOf(pkg) >= 0, "ensurePkgInstalled <$pkg> not installed")
     }
 
     public ExecProcBuilder uninstall(UninstallInfo uninstallInfo) {

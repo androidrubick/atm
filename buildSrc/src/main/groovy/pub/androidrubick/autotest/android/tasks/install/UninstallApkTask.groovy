@@ -15,25 +15,33 @@ import pub.androidrubick.autotest.core.tasks.TaskGroups
  *
  * @since 1.0.0
  */
-@SuppressWarnings("GroovyUnusedDeclaration")
-public class InstallApkTask extends BaseCollectDependentTask {
+@SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
+public class UninstallApkTask extends BaseCollectDependentTask {
 
-    public InstallApkTask() {
+    public static final PROP_UNINSTALL_OLD = 'UNINSTALL_OLD'
+
+    public UninstallApkTask() {
         group = TaskGroups.GROUP_INSTALL
     }
 
     @TaskAction
-    public void install() {
+    public void uninstall() {
+        if (!atm.prop.isTrue(PROP_UNINSTALL_OLD)) {
+            atm.log("Task $name: uninstall skipped")
+            return
+        }
+
         def context = androidSdk.context
         def installer = new AndroidInstaller(context)
         def appFile = archiveCollector.collectAppTask.appFile
+        def appInfo = archiveCollector.collectAppTask.appInfo
 
-        atm.logI("Task $name: install <${appFile}> on device(s)")
+        atm.logI("Task $name: uninstall <${appInfo.pkg}> on device(s)")
         new AndroidMultiDevicesExecutor(context) {
             @Override
             protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {
-                // 安装应用
-                installer.installLocal(appFile)
+                // 卸载应用
+                installer.uninstall(appInfo.pkg)
             }
         }.execute()
     }

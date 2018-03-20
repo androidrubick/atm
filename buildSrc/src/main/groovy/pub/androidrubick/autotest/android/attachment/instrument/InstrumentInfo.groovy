@@ -1,22 +1,28 @@
 package pub.androidrubick.autotest.android.attachment.instrument
 
+import pub.androidrubick.autotest.android.model.AppInfo
+
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class InstrumentInfo {
 
-    public final String pkg
+    public final AppInfo appInfo
     public final String instrumentationClz
     public final String targetPkg
 
-    public InstrumentInfo(String pkg, String instrumentationClz, String targetPkg) {
-        this.pkg = pkg
+    public InstrumentInfo(AppInfo appInfo, String instrumentationClz, String targetPkg) {
+        this.appInfo = appInfo
         this.instrumentationClz = instrumentationClz
         this.targetPkg = targetPkg
+    }
+
+    public String getPkg() {
+        return appInfo.pkg
     }
 
     @Override
     public String toString() {
         return "InstrumentInfo{" +
-                "pkg='" + pkg + '\'' +
+                "appInfo='" + appInfo + '\'' +
                 ", instrumentationClz='" + instrumentationClz + '\'' +
                 ", targetPkg='" + targetPkg + '\'' +
                 '}';

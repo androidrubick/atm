@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.attachment.cmd
 
+import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
@@ -35,6 +36,7 @@ class AdbShell extends BaseAndroidAttachment {
      *
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */
+    @NonNull
     public Map props(String grep = null) {
         ExecResult devicePropsResult = builder("getprop ${!isEmpty(grep) ? "| grep $grep" : ''}").exec()
         devicePropsResult.checkSuccess('deviceProps')
@@ -50,7 +52,7 @@ class AdbShell extends BaseAndroidAttachment {
         }?.collectEntries { m ->
             [ (m.group(1)) : m.group(2) ]
         }
-        return props
+        return props ?: [:]
     }
 
     /**

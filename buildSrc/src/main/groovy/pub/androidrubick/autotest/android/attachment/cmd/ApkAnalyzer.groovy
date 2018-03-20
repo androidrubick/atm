@@ -95,6 +95,6 @@ class ApkAnalyzer extends BaseAndroidAttachment {
 
         atm.preds.nonEmpty(instrumentationClz, 'getInstrumentInfo instrumentationClz')
         atm.preds.nonEmpty(targetPkg, 'getInstrumentInfo targetPkg')
-        return new InstrumentInfo(appInfo.pkg, instrumentationClz, targetPkg)
+        return new InstrumentInfo(appInfo, instrumentationClz, targetPkg)
     }
 }

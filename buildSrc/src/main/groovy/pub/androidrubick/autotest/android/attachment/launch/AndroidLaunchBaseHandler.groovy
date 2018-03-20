@@ -1,6 +1,8 @@
 package pub.androidrubick.autotest.android.attachment.launch
 
+import android.content.ComponentName
 import android.content.Intent
+import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.core.ATMContext
 
@@ -15,12 +17,11 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
     }
 
     @Override
-    public void launch(Intent intent) {
-        android_sdk.installer.checkPkgInstalled(launchInfo.pkg)
+    public void launch(@NonNull ComponentName component) {
+        androidSdk.adbShell.pm.ensurePkgInstalled(component.packageName)
 
-        performOnBeforeLaunch(launchInfo)
-        adb_shell("am start -n \"${launchInfo.pkg}/${launchInfo.mainActivity}\" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER").exec()
-                .checkSuccess('launchApp')
+        performOnBeforeLaunch(component)
+        androidSdk.adbShell.am.startActivity(Intent.makeMainActivity(component))
         performOnLaunchSuccess(launchInfo)
 
         // 等待几秒，确保启动后的一些状态
@@ -30,7 +31,7 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
         performOnLaunchStable(launchInfo)
     }
 
-    private void performOnBeforeLaunch(LaunchInfo launchInfo) {
+    private void performOnBeforeLaunch(ComponentName launchInfo) {
         this.mDoBeforeLaunchActions.each { Closure closure ->
             int paramCount = closure.getMaximumNumberOfParameters()
             switch (paramCount) {
@@ -45,7 +46,7 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
         }
     }
 
-    private void performOnLaunchSuccess(LaunchInfo launchInfo) {
+    private void performOnLaunchSuccess(ComponentName launchInfo) {
         this.mLaunchSuccessActions.each { Closure closure ->
             int paramCount = closure.getMaximumNumberOfParameters()
             switch (paramCount) {
@@ -60,7 +61,7 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
         }
     }
 
-    private void performOnLaunchStable(LaunchInfo launchInfo) {
+    private void performOnLaunchStable(Intent ComponentName) {
         this.mDoAfterLaunchStableActions.each { Closure closure ->
             int paramCount = closure.getMaximumNumberOfParameters()
             switch (paramCount) {

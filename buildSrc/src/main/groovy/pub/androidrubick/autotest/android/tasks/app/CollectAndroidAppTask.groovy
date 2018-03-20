@@ -1,6 +1,7 @@
 package pub.androidrubick.autotest.android.tasks.app
 
 import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.android.model.AppInfo
 import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
@@ -15,6 +16,7 @@ class CollectAndroidAppTask extends BaseCollectDependentTask {
 
     private final List<String> mAppPropertyNames = []
     private File mAppFile
+    private AppInfo mAppInfo
 
     public void setAppPropertyNames(List<String> names) {
         mAppPropertyNames.clear()
@@ -54,6 +56,10 @@ class CollectAndroidAppTask extends BaseCollectDependentTask {
         return mAppFile
     }
 
+    public AppInfo getAppInfo() {
+        return mAppInfo
+    }
+
     @TaskAction
     public void collect() {
         def appFilePath = null
@@ -74,6 +80,7 @@ class CollectAndroidAppTask extends BaseCollectDependentTask {
             }
         }
         mAppFile = atm.preds.isFile(new File(appFilePath), "Task $name")
+        mAppInfo = androidSdk.cmd.apkAnalyzer.getAppInfo(mAppFile)
     }
 
 }
