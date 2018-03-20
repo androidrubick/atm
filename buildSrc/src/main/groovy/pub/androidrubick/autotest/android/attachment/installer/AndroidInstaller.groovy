@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.attachment.installer
 
+import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.android.model.UninstallInfo
 import pub.androidrubick.autotest.core.ATMContext
@@ -11,9 +12,11 @@ import pub.androidrubick.autotest.core.ATMContext
 public class AndroidInstaller extends BaseAndroidAttachment {
 
     private final AndroidInstallHandlerFactory mInstallFactory
+    private final AndroidUninstallHandlerFactory mUninstallFactory
     public AndroidInstaller(ATMContext context) {
         super(context)
         mInstallFactory = new AndroidInstallHandlerFactory(context)
+        mUninstallFactory = new AndroidUninstallHandlerFactory(context)
     }
 
     /**
@@ -42,8 +45,8 @@ public class AndroidInstaller extends BaseAndroidAttachment {
      * @param pkg target package name
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */
-    public void uninstall(UninstallInfo uninstallInfo) {
-
+    public void uninstall(@NonNull UninstallInfo uninstallInfo) {
+        mUninstallFactory.factory().uninstall(uninstallInfo)
     }
 
 }

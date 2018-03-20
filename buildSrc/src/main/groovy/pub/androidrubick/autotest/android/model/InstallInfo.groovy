@@ -36,6 +36,10 @@ public class InstallInfo implements Cmdable {
         mFile = file
     }
 
+    public final File getFile() {
+        return mFile
+    }
+
     /**
      * 默认为true
      */

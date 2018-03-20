@@ -13,7 +13,7 @@ import pub.androidrubick.autotest.core.util.Utils
  *
  * @since 1.0.0
  */
-@SuppressWarnings("GroovyUnusedDeclaration")
+@SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
 public abstract class BaseAndroidMultiDevicesTask extends BaseAndroidTask {
 
     /**
