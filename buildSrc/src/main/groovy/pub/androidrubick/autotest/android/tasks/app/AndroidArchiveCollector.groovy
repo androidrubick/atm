@@ -2,6 +2,7 @@ package pub.androidrubick.autotest.android.tasks.app
 
 import pub.androidrubick.autotest.android.AndroidPlugin
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
+import pub.androidrubick.autotest.android.property.AndroidGradleProperties
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
 import pub.androidrubick.autotest.core.util.Utils
@@ -12,10 +13,9 @@ import pub.androidrubick.autotest.core.util.Utils
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class AndroidArchiveCollector extends BaseAndroidAttachment {
 
-    public static final List<String> COLLECT_APP_PROPS = ['APP_PATH', 'ARCHIVE_PATH']
-    public static final List<String> COLLECT_TEST_APP_PROPS = ['TEST_APP_PATH', 'TEST_ARCHIVE_PATH']
     public static List<String> collectProps(AppArchiveType type) {
-        return type == AppArchiveType.AndroidTestApp ? COLLECT_TEST_APP_PROPS : COLLECT_APP_PROPS
+        return type == AppArchiveType.AndroidTestApp ? AndroidGradleProperties.testAppPath
+                : AndroidGradleProperties.appPath
     }
 
     private final AppArchiveType mType

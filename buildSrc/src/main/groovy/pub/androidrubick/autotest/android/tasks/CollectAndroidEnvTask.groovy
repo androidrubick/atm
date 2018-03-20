@@ -1,6 +1,7 @@
 package pub.androidrubick.autotest.android.tasks
 
 import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.android.property.AndroidGradleProperties
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
@@ -38,27 +39,11 @@ class CollectAndroidEnvTask extends BaseAndroidTask {
     /**
      * 从环境变量中获取android SDK的路径;
      *
-     * 包含android sdk根目录设置，支持如下的环境变量名：
-     * 1、ANDROID_HOME；
-     * 2、ANDROID_SDK_HOME；
-     * 3、ANDROID_SDK；
-     * 4、ANDROID_SDK_ROOT；
-     *
      * @since 1.0.0
      */
     private String checkAndroidSDKEnvName() {
-        if (project.hasProperty('ANDROID_HOME')) {
-            return 'ANDROID_HOME'
-        }
-        if (project.hasProperty('ANDROID_SDK_HOME')) {
-            return 'ANDROID_SDK_HOME'
-        }
-        if (project.hasProperty('ANDROID_SDK_ROOT')) {
-            return 'ANDROID_SDK_ROOT'
-        }
-        if (project.hasProperty('ANDROID_SDK')) {
-            return 'ANDROID_SDK'
-        }
-        return ''
+        return AndroidGradleProperties.androidHome.find { name ->
+            project.hasProperty(name)
+        } ?: ''
     }
 }

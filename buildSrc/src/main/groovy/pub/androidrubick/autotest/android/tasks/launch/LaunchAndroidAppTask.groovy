@@ -49,7 +49,6 @@ class LaunchAndroidAppTask extends BaseCollectDependentTask {
                 }
             }.execute()
         }
-
     }
 
 }

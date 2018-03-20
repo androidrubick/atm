@@ -7,6 +7,8 @@ import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
 import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
+import static pub.androidrubick.autotest.android.property.AndroidGradleProperties.UNINSTALL_OLD
+
 /**
  * Base task used in this lib.
  * 
@@ -18,15 +20,13 @@ import pub.androidrubick.autotest.core.tasks.TaskGroups
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
 public class UninstallApkTask extends BaseCollectDependentTask {
 
-    public static final PROP_UNINSTALL_OLD = 'UNINSTALL_OLD'
-
     public UninstallApkTask() {
         group = TaskGroups.GROUP_INSTALL
     }
 
     @TaskAction
     public void uninstall() {
-        if (!atm.prop.isTrue(PROP_UNINSTALL_OLD)) {
+        if (!atm.prop.isTrue(UNINSTALL_OLD)) {
             atm.log("Task $name: uninstall skipped")
             return
         }
