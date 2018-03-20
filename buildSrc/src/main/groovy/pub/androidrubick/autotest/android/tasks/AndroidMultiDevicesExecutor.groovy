@@ -1,8 +1,9 @@
 package pub.androidrubick.autotest.android.tasks
 
-import org.gradle.api.tasks.TaskAction
+import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
+import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.util.Utils
 
 /**
@@ -13,20 +14,19 @@ import pub.androidrubick.autotest.core.util.Utils
  *
  * @since 1.0.0
  */
-@SuppressWarnings("GroovyUnusedDeclaration")
-public abstract class BaseAndroidMultiDevicesTask extends BaseAndroidTask {
+@SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
+public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment {
 
     /**
      * serial number of target device
      */
     public static final PROP_TARGET_DEVICE = 'TARGET_DEVICE'
 
-    public BaseAndroidMultiDevicesTask() {
-
+    public AndroidMultiDevicesExecutor(ATMContext context) {
+        super(context)
     }
 
-    @TaskAction
-    public void doOnMultiDevices() {
+    public final void execute() {
         androidSdk.configuration.clearTargetDevice()
 
         def devices = null
@@ -40,18 +40,17 @@ public abstract class BaseAndroidMultiDevicesTask extends BaseAndroidTask {
         } else {
             atm.logW("No target device Found by property `$PROP_TARGET_DEVICE`")
             devices = androidSdk.configuration.devices
+            atm.logW("So we use devices $devices")
         }
 
         def onlineDevices = AdbDevice.filterOnline(devices)
-        if (!Utils.isEmpty(onlineDevices)) {
-            onlineDevices.each { device ->
-                def deviceInfo = androidSdk.adbUtil.deviceInfo
-                androidSdk.configuration.targetDevice = device
-                androidSdk.configuration.targetDeviceInfo = deviceInfo
-                doEachDevice(device, deviceInfo)
-            }
-        } else {
-            atm.logW("No online device Found")
+        atm.preds.nonEmpty(onlineDevices, "No online device Found")
+
+        onlineDevices.each { device ->
+            def deviceInfo = androidSdk.adbUtil.deviceInfo
+            androidSdk.configuration.targetDevice = device
+            androidSdk.configuration.targetDeviceInfo = deviceInfo
+            doEachDevice(device, deviceInfo)
         }
     }
 

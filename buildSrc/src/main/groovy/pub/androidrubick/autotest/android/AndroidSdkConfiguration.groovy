@@ -2,6 +2,7 @@ package pub.androidrubick.autotest.android
 
 import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.model.AdbDevice
+import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.BaseAttachment
 
@@ -51,10 +52,25 @@ class AndroidSdkConfiguration extends BaseAttachment {
         return mTargetDevice
     }
 
+    private DeviceInfo mTargetDeviceInfo
+    public AndroidSdkConfiguration setTargetDeviceInfo(DeviceInfo deviceInfo) {
+        mTargetDeviceInfo = deviceInfo
+        return this
+    }
+
+    public DeviceInfo getTargetDeviceInfo() {
+        return mTargetDeviceInfo
+    }
+
     public AndroidSdkConfiguration clear() {
         mSDKDir = ''
         mDevices.clear()
+        return clearTargetDevice()
+    }
+
+    public AndroidSdkConfiguration clearTargetDevice() {
         mTargetDevice = null
+        mTargetDeviceInfo = null
         return this
     }
 

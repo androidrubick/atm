@@ -13,6 +13,7 @@ import android.support.annotation.RequiresPermission;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("GroovyUnusedDeclaration")
 public class ATAndroidContext extends Context {
 
     @Override

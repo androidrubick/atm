@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.attachment.cmd
 
+import android.util.Log
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.android.model.InstallInfo
 import pub.androidrubick.autotest.android.model.UninstallInfo
@@ -19,6 +20,25 @@ class AdbShellPm extends BaseAndroidAttachment {
 
     public ExecProcBuilder install(InstallInfo installInfo) {
         return builder("install ${installInfo.toCmdString()}")
+    }
+
+    /**
+     * 检查指定的包名的应用是否已经安装
+     *
+     * @param pkg 包名
+     * @throws RuntimeException 当执行命令行发生错误时抛出异常
+     */
+    public boolean checkPkgInstalled(String pkg) {
+        try {
+            def filterPkgResult = builder("list packages $pkg").exec()
+                    .checkNonEmptyText("checkPkgInstalled `$pkg` not installed")
+            atm.preds.isTrue(filterPkgResult.text.indexOf(pkg) >= 0, "checkPkgInstalled `$pkg` not installed")
+            return true
+        } catch (Throwable e) {
+            atm.logE("checkPkgInstalled failed")
+            atm.logE(Log.getStackTraceString(e))
+            return false
+        }
     }
 
     public ExecProcBuilder uninstall(UninstallInfo uninstallInfo) {

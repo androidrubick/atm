@@ -24,12 +24,20 @@ class AdbShellAm extends BaseAndroidAttachment {
         return builder("force-stop $pkg").exec().checkSuccess('forceStop')
     }
 
-    public ExecResult broadcast(@NonNull Intent intent) {
-        return builder("broadcast ${IntentCmd.toCmdString(intent)}").exec()
-                .checkSuccess('send broadcast')
+    public ExecResult startActivity(@NonNull Intent intent) {
+        return builder("start ${IntentCmd.toCmdString(intent)}").exec().checkSuccess('startActivity')
     }
 
-    public ExecProcBuilder instrument(AndroidTestCase testCase) {
+    public ExecResult startService(@NonNull Intent intent) {
+        return builder("startservice ${IntentCmd.toCmdString(intent)}").exec().checkSuccess('startService')
+    }
+
+    public ExecResult sendBroadcast(@NonNull Intent intent) {
+        return builder("broadcast ${IntentCmd.toCmdString(intent)}").exec()
+                .checkSuccess('sendBroadcast')
+    }
+
+    public ExecProcBuilder startInstrument(@NonNull AndroidTestCase testCase) {
         return builder("instrument -w -r -e debug ${testCase.debug} " +
                 "${testCase.notWindowAnim ? '--no-window-animation' : ''} " +
                 "-e class ${testCase.testClz.fullName} " +

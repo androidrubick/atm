@@ -62,4 +62,17 @@ public class AppArchiveType {
     public String toString() {
         return mName
     }
+
+    @Override
+    boolean equals(Object o) {
+        if (o instanceof AppArchiveType) {
+            return Objects.equals(this.platform, o.platform) && Objects.equals(this.name, o.name)
+        }
+        return false
+    }
+
+    @Override
+    int hashCode() {
+        return Objects.hash(this.platform, this.name)
+    }
 }

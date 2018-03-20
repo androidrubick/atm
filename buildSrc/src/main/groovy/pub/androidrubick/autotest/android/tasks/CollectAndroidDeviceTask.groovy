@@ -17,9 +17,9 @@ class CollectAndroidDeviceTask extends BaseAndroidTask {
         androidSdk.configuration.with {
             // set all
             setDevices(devices)
-            // set default
-            setTargetDevice(devices[0])
         }
+
+        atm.log("$name: loaded devices: $devices")
     }
 
 }

@@ -9,8 +9,9 @@ import pub.androidrubick.autotest.core.model.Rect
 
 import static pub.androidrubick.autotest.core.util.FileUtils.ensureDirExists
 import static pub.androidrubick.autotest.core.util.FileUtils.ensureFileNotExists
+import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 
-@SuppressWarnings("GroovyUnusedDeclaration")
+@SuppressWarnings(["GroovyUnusedDeclaration", "GrMethodMayBeStatic"])
 class AdbShellUiAutomator extends BaseAndroidAttachment {
 
     AdbShellUiAutomator(ATMContext context) {
@@ -58,7 +59,7 @@ class AdbShellUiAutomator extends BaseAndroidAttachment {
         def dumpFileInLocal = new File(tmpDir, dumpFileInDevice.name)
         ensureFileNotExists(dumpFileInLocal)
 
-        storage.pullFile(dumpFileInDevice, dumpFileInLocal)
+        androidSdk.adb.pullFile(dumpFileInDevice, dumpFileInLocal)
 
         atm.preds.file(dumpFileInLocal, 'dumpUIFile2Local')
         atm.logI("dumpUIFile2Local dumpFile: $dumpFileInLocal")

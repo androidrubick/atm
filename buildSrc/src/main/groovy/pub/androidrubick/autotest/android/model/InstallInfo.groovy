@@ -20,10 +20,10 @@ public class InstallInfo implements Cmdable {
 //    -s：在共享的大容量存储（如 sdcard）上安装软件包。
 //    -f：在内部系统内存上安装软件包。
 //    -d：允许版本代码降级。
-//    -g：授予应用清单中列出的所有权限。
+//    -g：授予应用清单中列出的所有权限。// since
 
-    public static InstallInfo fromFile(@NonNull File file) {
-        return new InstallInfo(file)
+    public static InstallInfo fromFile(@NonNull File remoteFile) {
+        return new InstallInfo(remoteFile)
     }
 
     private final File mFile
@@ -80,9 +80,10 @@ public class InstallInfo implements Cmdable {
         if (mDowngradeEnabled) {
             cmd << '-d'
         }
-        if (mGrantPermissions) {
-            cmd << '-g'
-        }
+        // adb 25.0.2 尚未支持
+//        if (mGrantPermissions) {
+//            cmd << '-g'
+//        }
         cmd << mFile.absolutePath
         return cmd.join(' ')
     }

@@ -57,8 +57,9 @@ public class AdbDevice {
     public String toString() {
         return "AdbDevice{" +
                 "serialNumber='" + serialNumber + '\'' +
-                ", type='" + type + '\'' +
+                ", state='" + state + '\'' +
                 ", extras=" + extras +
+                ", online=" + online +
                 '}';
     }
 

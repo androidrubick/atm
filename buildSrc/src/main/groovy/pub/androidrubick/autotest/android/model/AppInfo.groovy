@@ -12,17 +12,17 @@ public class AppInfo {
 
     public String pkg
     public String versionName
-    public String versionCode
+    public int versionCode
 
     public ComponentName launchInfo
 
     public AppInfo() {}
 
-    public AppInfo(String pkg, String versionName, String versionCode, ComponentName launchInfo = null) {
+    public AppInfo(String pkg, ComponentName launchInfo = null, String versionName = '1.0.0', int versionCode = 1) {
         this.pkg = pkg
+        this.launchInfo = launchInfo
         this.versionName = versionName
         this.versionCode = versionCode
-        this.launchInfo = launchInfo
     }
 
     @Override

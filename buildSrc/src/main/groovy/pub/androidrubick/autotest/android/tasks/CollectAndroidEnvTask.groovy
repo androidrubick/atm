@@ -31,7 +31,8 @@ class CollectAndroidEnvTask extends BaseAndroidTask {
     }
 
     private void checkAdbEnv() {
-        androidSdk.cmd.adb.version()
+        androidSdk.adb.version()
+        androidSdk.adb.startServer()
     }
 
     /**

@@ -6,6 +6,7 @@ import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
 
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
+import static pub.androidrubick.autotest.core.util.Utils.randomStr
 
 /**
  * 封装一些工具方法，
@@ -13,10 +14,11 @@ import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 @SuppressWarnings("GroovyUnusedDeclaration")
 class AdbUtil extends BaseAndroidAttachment {
 
+    private final File REMOTE_TMP_DIR = new File('/data/local/tmp')
+    private final String REMOTE_TMP_FILE_PRE = 'vsri_tmp_apk_'
+
     AdbUtil(ATMContext context) {
         super(context)
-        REMOTE_TMP_DIR = new File('/data/local/tmp')
-        REMOTE_TMP_FILE_PRE = 'vsri_tmp_apk_'
     }
 
     /**
@@ -31,15 +33,15 @@ class AdbUtil extends BaseAndroidAttachment {
     }
 
     public ExecResult rmRemoteTmpFiles() {
-        return androidSdk.adbShell.builder("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*").exec()
-                .checkSuccess('rmRemoteTmpFiles')
+        return androidSdk.adbShell.builder("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*")
+                .exec().checkSuccess('rmRemoteTmpFiles')
     }
 
     /**
      * @return 机型信息
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */
-    public DeviceInfo getInfo() {
+    public DeviceInfo getDeviceInfo() {
         def brand = this.prop('ro.product.brand')
         def manufacturer = this.prop('ro.product.manufacturer')
         def model = this.prop('ro.product.model')

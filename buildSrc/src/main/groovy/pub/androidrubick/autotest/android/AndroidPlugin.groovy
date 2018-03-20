@@ -4,8 +4,14 @@ import android.support.annotation.NonNull
 import org.gradle.api.Project
 import pub.androidrubick.autotest.android.tasks.CollectAndroidDeviceTask
 import pub.androidrubick.autotest.android.tasks.CollectAndroidEnvTask
+import pub.androidrubick.autotest.android.tasks.app.AndroidArchiveCollector
+import pub.androidrubick.autotest.android.tasks.install.InstallApkTask
+import pub.androidrubick.autotest.android.tasks.launch.LaunchAndroidAppTask
 import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.BaseATMPlugin
+import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
+import pub.androidrubick.autotest.core.attachment.app.AppPlatform
+import pub.androidrubick.autotest.core.util.Utils
 
 /**
  * <p>
@@ -13,29 +19,38 @@ import pub.androidrubick.autotest.core.BaseATMPlugin
  *
  * @since 1.0.0
  */
+@SuppressWarnings("GrMethodMayBeStatic")
 public class AndroidPlugin extends BaseATMPlugin {
+
+    public static final String TASK_COLLECT_ANDROID_ENV = 'collectAndroidEnv'
+    public static final String TASK_COLLECT_ANDROID_DEVICE = 'collectAndroidDevice'
 
     @Override
     protected void applyMe(@NonNull Project project, @NonNull ATM atm) {
         AndroidSdk.attach(project)
 
         project.with {
-            tasks.create('collectAndroidEnv', CollectAndroidEnvTask)
-            tasks.create('collectAndroidDevice',  CollectAndroidDeviceTask).dependsOn('collectAndroidEnv')
+            tasks.create(TASK_COLLECT_ANDROID_ENV, CollectAndroidEnvTask)
+            tasks.create(TASK_COLLECT_ANDROID_DEVICE,  CollectAndroidDeviceTask).dependsOn(TASK_COLLECT_ANDROID_ENV)
+        }
 
-            AppArchiveType.allAvailableOf(AppPlatform.Android).each { AppArchiveType type ->
-                tasks.create('collect' + Utils.capitalize(type.name), CollectAndroidAppTask)
+        def context = AndroidSdk.fromProject(project).context
+        AppArchiveType.allAvailableOf(AppPlatform.Android).collect {
+            new AndroidArchiveCollector(context, it)
+        }.each { ac ->
+            ac.createCollectAppTask()
+        }.each { ac ->
+            String capitalizedTypeName = Utils.capitalize(ac.type.name)
+            project.with {
+                tasks.create('install' + capitalizedTypeName, InstallApkTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(ac.collectAppTask.name)
+
+                tasks.create('launch' + capitalizedTypeName, LaunchAndroidAppTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn('install' + capitalizedTypeName)
             }
-
-//            tasks.create('dumpUI', DumpUITask)
-//            tasks.create('installApk', InstallApkTask)
-//            tasks.create('launchApp', LaunchAppTask)
-//            tasks.create('instrumentApp', InstrumentAppTask)
-//            tasks.create('simpleSampler', SimpleSamplerTask)
-
-
-//            tasks.create('assembleT', SimpleSamplerTask)
-//            tasks.create('performAndroidSimpleScene', SimpleSamplerTask)
         }
     }
+
 }
