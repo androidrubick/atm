@@ -1,6 +1,8 @@
 package pub.androidrubick.autotest.android.attachment.launch
 
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAdapter
+import pub.androidrubick.autotest.android.attachment.autoconfirm.AutoConfirmConfig
+import pub.androidrubick.autotest.android.attachment.autoconfirm.AutoConfirmUtil
 import pub.androidrubick.autotest.core.ATMContext
 
 /**
@@ -9,14 +11,16 @@ import pub.androidrubick.autotest.core.ATMContext
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class AndroidLaunchHandlerFactory extends BaseAndroidAdapter {
 
+    private final AutoConfirmUtil mAutoConfirmUtil
     public AndroidLaunchHandlerFactory(ATMContext context) {
         super(context)
+        mAutoConfirmUtil = new AutoConfirmUtil(context)
     }
 
     public final AndroidLaunchHandler factory() {
         AndroidLaunchBaseHandler handler = new AndroidLaunchBaseHandler(context)
 
-        if (isHawei()) {
+        if (isHuawei()) {
             handler.doAfterLaunchStable {
                 autoConfirmHaweiPermission()
             }
@@ -69,7 +73,7 @@ public class AndroidLaunchHandlerFactory extends BaseAndroidAdapter {
             }
             return ret
         }
-        android_sdk.ui.autoConfirm.performAutoConfirm(config)
+        mAutoConfirmUtil.performAutoConfirm(config)
     }
 
 }

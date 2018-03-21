@@ -6,6 +6,8 @@ import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.util.Utils
 
+import static pub.androidrubick.autotest.android.property.AndroidGradleProperties.TARGET_DEVICE
+
 /**
  * Base task used in this lib.
  * 
@@ -17,11 +19,6 @@ import pub.androidrubick.autotest.core.util.Utils
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
 public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment {
 
-    /**
-     * serial number of target device
-     */
-    public static final PROP_TARGET_DEVICE = 'TARGET_DEVICE'
-
     public AndroidMultiDevicesExecutor(ATMContext context) {
         super(context)
     }
@@ -30,7 +27,7 @@ public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment 
         androidSdk.configuration.clearTargetDevice()
 
         def devices = null
-        def targetDeviceSN = atm.prop.value(PROP_TARGET_DEVICE, null)
+        def targetDeviceSN = atm.prop.value(TARGET_DEVICE, null)
         if (!Utils.isEmpty(targetDeviceSN)) {
             def targetDevice = androidSdk.configuration.devices.find { device ->
                 device.serialNumber == targetDeviceSN
@@ -38,7 +35,7 @@ public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment 
             atm.preds.nonNull(targetDevice, "No device found of serial number <${targetDeviceSN}>")
             devices = [targetDevice]
         } else {
-            atm.logW("No target device Found by property <${PROP_TARGET_DEVICE}>")
+            atm.logW("No target device Found by property <${TARGET_DEVICE}>")
             devices = androidSdk.configuration.devices
             atm.logW("So we use devices $devices")
         }
@@ -47,8 +44,8 @@ public abstract class AndroidMultiDevicesExecutor extends BaseAndroidAttachment 
         atm.preds.nonEmpty(onlineDevices, "No online device Found")
 
         onlineDevices.each { device ->
-            def deviceInfo = androidSdk.adbUtil.deviceInfo
             androidSdk.configuration.targetDevice = device
+            def deviceInfo = androidSdk.adbUtil.deviceInfo
             androidSdk.configuration.targetDeviceInfo = deviceInfo
             doEachDevice(device, deviceInfo)
         }

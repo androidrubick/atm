@@ -1,6 +1,5 @@
 package pub.androidrubick.autotest.android.tasks.launch
 
-import android.content.ComponentName
 import org.gradle.api.tasks.TaskAction
 import pub.androidrubick.autotest.android.attachment.instrument.AndroidTestCase
 import pub.androidrubick.autotest.android.attachment.instrument.InstrumentTestClz

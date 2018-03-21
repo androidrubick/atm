@@ -22,13 +22,13 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
 
         performOnBeforeLaunch(component)
         androidSdk.adbShell.am.startActivity(Intent.makeMainActivity(component))
-        performOnLaunchSuccess(launchInfo)
+        performOnLaunchSuccess(component)
 
         // 等待几秒，确保启动后的一些状态
         atm.logI('sleep for launching...')
         sleep(1000)
 
-        performOnLaunchStable(launchInfo)
+        performOnLaunchStable(component)
     }
 
     private void performOnBeforeLaunch(ComponentName launchInfo) {
@@ -61,7 +61,7 @@ public class AndroidLaunchBaseHandler extends BaseAndroidAttachment implements A
         }
     }
 
-    private void performOnLaunchStable(Intent ComponentName) {
+    private void performOnLaunchStable(ComponentName launchInfo) {
         this.mDoAfterLaunchStableActions.each { Closure closure ->
             int paramCount = closure.getMaximumNumberOfParameters()
             switch (paramCount) {

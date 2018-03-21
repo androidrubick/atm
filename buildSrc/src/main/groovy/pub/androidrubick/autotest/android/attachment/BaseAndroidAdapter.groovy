@@ -28,11 +28,11 @@ public abstract class BaseAndroidAdapter extends BaseAndroidAttachment {
         return isBrandOrManufacturer('samsung')
     }
 
-    public boolean isHawei() {
+    public boolean isHuawei() {
         return isBrandOrManufacturer('huawei')
     }
 
-    public boolean isHaweiHonor() {
+    public boolean isHuaweiHonor() {
         return isBrandOrManufacturer('honor')
     }
 

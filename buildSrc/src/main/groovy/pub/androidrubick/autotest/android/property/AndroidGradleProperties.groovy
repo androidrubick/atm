@@ -19,6 +19,11 @@ class AndroidGradleProperties extends ATMGradleProperties {
     }
 
     /**
+     * serial number of target device
+     */
+    public static final TARGET_DEVICE = 'TARGET_DEVICE'
+
+    /**
      * 测试用例的
      *
      * @since 1.0.0

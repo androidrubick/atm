@@ -51,7 +51,7 @@ class AdbUtil extends BaseAndroidAttachment {
         }
         def osVersion = this.prop('ro.build.version.release')
         def apiLevel = this.prop('ro.build.version.sdk')
-        atm.preds.isTrue(!isEmpty(brand) || !isEmpty(model) || !isEmpty(osName) || !isEmpty(osVersion) || !isEmpty(apiLevel), 'deviceFullName')
+        atm.preds.isTrue(!isEmpty(brand) || !isEmpty(model) || !isEmpty(osVersion) || !isEmpty(apiLevel), 'deviceFullName')
         def fullName = "${brand} ${model}, ${osName} ${osVersion}, API ${apiLevel}"
 
         def deviceInfo = new DeviceInfo()

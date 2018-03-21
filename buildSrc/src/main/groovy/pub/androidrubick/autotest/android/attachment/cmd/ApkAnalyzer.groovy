@@ -19,7 +19,7 @@ class ApkAnalyzer extends BaseAndroidAttachment {
         super(context)
     }
 
-    public ExecProcBuilder builder(String cmd) {
+    public ExecProcBuilder builder(String command) {
         return androidSdk.cmd.tools_bin("apkanalyzer $command")
     }
 
