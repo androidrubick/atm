@@ -10,7 +10,7 @@ import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
 public class DefaultArchiveCollector extends ArchiveCollector<CollectAppTask> {
 
     public DefaultArchiveCollector(ATMContext context, AppArchiveType type) {
-        super(context)
+        super(context, type)
     }
 
     public final CollectAppTask createDefaultCollectAppTask() {
