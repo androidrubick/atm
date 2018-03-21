@@ -8,6 +8,20 @@ repositories {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/ATM/java'
+        }
+        groovy {
+            srcDir 'src/main/ATM/groovy'
+        }
+        resources {
+            srcDir 'src/main/ATM/resources'
+        }
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile JUNIT_LIB
