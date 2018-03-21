@@ -19,6 +19,16 @@ public class PropertyUtil extends BaseAttachment {
     }
 
     /**
+     * 是否包含属性值
+     * @param name property name
+     * @return 是否包含属性值
+     * @since 1.0.0
+     */
+    public Object has(String name) {
+        return project.hasProperty(name)
+    }
+
+    /**
      * 获取属性值
      * @param name property name
      * @param defVal default value
@@ -26,7 +36,7 @@ public class PropertyUtil extends BaseAttachment {
      * @since 1.0.0
      */
     public Object value(String name, Object defVal = null) {
-        return project.hasProperty(name) ? project.property(name) : defVal
+        return has(name) ? project.property(name) : defVal
     }
 
     /**

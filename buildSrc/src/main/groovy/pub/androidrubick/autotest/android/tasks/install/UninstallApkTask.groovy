@@ -27,7 +27,7 @@ public class UninstallApkTask extends BaseCollectDependentTask {
 
     @TaskAction
     public void uninstall() {
-        if (!atm.prop.isTrue(UNINSTALL_OLD)) {
+        if (!atm.prop.has(UNINSTALL_OLD)) {
             atm.log("Task $name: uninstall skipped")
             return
         }

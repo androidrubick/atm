@@ -5,6 +5,8 @@ import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
 
+import static pub.androidrubick.autotest.core.util.FileUtils.ensureDirExists
+import static pub.androidrubick.autotest.core.util.FileUtils.ensureFileNotExists
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 import static pub.androidrubick.autotest.core.util.Utils.randomStr
 
@@ -35,6 +37,25 @@ class AdbUtil extends BaseAndroidAttachment {
     public ExecResult rmRemoteTmpFiles() {
         return androidSdk.adbShell.builder("rm -rf ${REMOTE_TMP_DIR.absolutePath}/$REMOTE_TMP_FILE_PRE*")
                 .exec().checkSuccess('rmRemoteTmpFiles')
+    }
+
+    /**
+     * 生成设备当前的UI结构，并存储到本地
+     * @return 本地的文件路径，File
+     */
+    public File dumpUIFile2Local() {
+        def dumpFileInDevice = new File(androidSdk.adbShell.uiautomator.dumpUIFileInDevice())
+        def tmpDir = new File(project.rootProject.buildDir, 'tmp/dump-ui')
+        ensureDirExists(tmpDir)
+
+        def dumpFileInLocal = new File(tmpDir, dumpFileInDevice.name)
+        ensureFileNotExists(dumpFileInLocal)
+
+        androidSdk.adb.pullFile(dumpFileInDevice, dumpFileInLocal)
+
+        atm.preds.isFile(dumpFileInLocal, 'dumpUIFile2Local')
+        atm.logI("dumpUIFile2Local dumpFile: $dumpFileInLocal")
+        return dumpFileInLocal
     }
 
     /**

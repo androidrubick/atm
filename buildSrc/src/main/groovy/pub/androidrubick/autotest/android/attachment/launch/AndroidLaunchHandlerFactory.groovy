@@ -57,22 +57,23 @@ public class AndroidLaunchHandlerFactory extends BaseAndroidAdapter {
     }
 
     private void autoConfirmPermission(name, packages, confirmBtnTextFilter = null) {
-        def config = AutoConfirmConfig.newDef()
-        config.name = name
-        config.packages = packages
-        config.sync = true
-        config.delayTime = 2000
-        config.periodTime = 1000
-        config.loopCount = 3
-        config.confirmBtnTextFilter = { btn ->
-            def btnText = btn.text
-            def ret = ['授权'].contains(btnText)
-            ret = ret || 'permit'.equalsIgnoreCase(btnText)
-            if (confirmBtnTextFilter != null) {
-                ret = ret || confirmBtnTextFilter(btn)
-            }
-            return ret
-        }
+        def config = AutoConfirmConfig.newConfig(
+                name: name,
+                packages: packages,
+                sync: true,
+                delayTime: 2000,
+                periodTime: 1000,
+                loopCount: 3,
+                confirmBtnTextFilter: { btn ->
+                    def btnText = btn.text
+                    def ret = ['授权'].contains(btnText)
+                    ret = ret || 'permit'.equalsIgnoreCase(btnText)
+                    if (confirmBtnTextFilter != null) {
+                        ret = ret || confirmBtnTextFilter(btn)
+                    }
+                    return ret
+                }
+        )
         mAutoConfirmUtil.performAutoConfirm(config)
     }
 

@@ -15,6 +15,8 @@ class CollectAndroidEnvTask extends BaseAndroidTask {
 
     @TaskAction
     public void collect() {
+        atm.logI("Gradle Project properties: $project.ext.properties")
+
         def androidSDKEnvProName = checkAndroidSDKEnvName()
         atm.logI("Android SDK Environment Name: $androidSDKEnvProName")
 

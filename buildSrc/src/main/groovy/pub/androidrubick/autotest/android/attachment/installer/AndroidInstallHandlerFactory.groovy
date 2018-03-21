@@ -46,17 +46,18 @@ public class AndroidInstallHandlerFactory extends BaseAndroidAdapter {
 
     private void autoConfirmInstall() {
         // TODO: 适配机型，如5.0.*手机文本乱码问题
-        def config = ADB_INSTALL_TMP_CONFIG = AutoConfirmConfig.newDef()
-        config.name = 'autoConfirmInstall'
-        config.packages = ['com.android.packageinstaller']
-        config.confirmBtnTextFilter = { btn ->
-            def btnText = btn.text
-            def ret = ['安装', '完成', '确定', '确认', '允许', '同意'].contains(btnText)
-            ret = ret || 'ok'.equalsIgnoreCase(btnText) || 'confirm'.equalsIgnoreCase(btnText)
-            ret = ret || 'install'.equalsIgnoreCase(btnText) || 'done'.equalsIgnoreCase(btnText)
-            ret = ret || ['下一步'].contains(btnText) || 'next'.equalsIgnoreCase(btnText)
-            return ret
-        }
+        def config = ADB_INSTALL_TMP_CONFIG = AutoConfirmConfig.newConfig(
+                name: 'autoConfirmInstall',
+                packages: ['com.android.packageinstaller'],
+                confirmBtnTextFilter: { btn ->
+                    def btnText = btn.text
+                    def ret = ['安装', '完成', '确定', '确认', '允许', '同意'].contains(btnText)
+                    ret = ret || 'ok'.equalsIgnoreCase(btnText) || 'confirm'.equalsIgnoreCase(btnText)
+                    ret = ret || 'install'.equalsIgnoreCase(btnText) || 'done'.equalsIgnoreCase(btnText)
+                    ret = ret || ['下一步'].contains(btnText) || 'next'.equalsIgnoreCase(btnText)
+                    return ret
+                }
+        )
         mAutoConfirmUtil.performAutoConfirm(config)
     }
 
@@ -64,17 +65,17 @@ public class AndroidInstallHandlerFactory extends BaseAndroidAdapter {
      * 三星系列手机安装后，会弹出"应用程序许可界面"，此处直接处理掉
      */
     private void autoConfirmSamsungPermissionAfterInstall() {
-        def config = AutoConfirmConfig.newDef()
-        config.name = 'SamsungPermissionConfirm'
-        config.packages = ['com.android.settings']
-        config.sync = true
-        config.delayTime = 1000
-        config.periodTime = 1000
-        config.loopCount = 3
-        config.confirmBtnTextFilter = { btn ->
-            btn.text == '??' || btn.id == 'com.android.settings:id/button'
-        }
-        mAutoConfirmUtil.performAutoConfirm(config)
+        mAutoConfirmUtil.performAutoConfirm(AutoConfirmConfig.newConfig(
+                name: 'SamsungPermissionConfirm',
+                packages: ['com.android.settings'],
+                sync: true,
+                delayTime: 1000,
+                periodTime: 1000,
+                loopCount: 3,
+                confirmBtnTextFilter: { btn ->
+                    btn.text == '??' || btn.id == 'com.android.settings:id/button'
+                }
+        ))
     }
 
 }

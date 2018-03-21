@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.attachment.autoconfirm
 
+import android.support.annotation.NonNull
 import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.core.ATMContext
 
@@ -40,14 +41,14 @@ public class AutoConfirmUtil extends BaseAndroidAttachment {
         }
     }
 
-    private void autoConfirmInternalSync(AutoConfirmConfig config) {
+    private void autoConfirmInternalSync(@NonNull AutoConfirmConfig config) {
         long beginTime = System.currentTimeMillis()
         int curLoopCount = 0
         int loopCount = config.loopCount
         sleep(config.delayTime)
         while (loopCount-- > 0 && !config.doneFlag) {
             curLoopCount++
-            if (config.maxLoopCount != null && config.maxLoopCount > 0 && curLoopCount > config.maxLoopCount) {
+            if (config.maxLoopCount > 0 && curLoopCount > config.maxLoopCount) {
                 break
             }
 
@@ -55,11 +56,11 @@ public class AutoConfirmUtil extends BaseAndroidAttachment {
             if (config.doneFlag) {
                 break
             }
-            if (config.timeout != null && config.timeout > 0 && (System.currentTimeMillis() - beginTime) >= config.timeout) {
+            if (config.timeout > 0 && (System.currentTimeMillis() - beginTime) >= config.timeout) {
                 break
             }
 
-            def dumpFileInLocal = androidSdk.adbShell.uiautomator.dumpUIFile2Local()
+            def dumpFileInLocal = androidSdk.adbUtil.dumpUIFile2Local()
             def hierarchy = new XmlParser().parseText(dumpFileInLocal.text)
             if (isEmpty(hierarchy)) {
                 continue

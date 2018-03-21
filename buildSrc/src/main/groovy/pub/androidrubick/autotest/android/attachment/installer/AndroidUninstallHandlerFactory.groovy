@@ -37,17 +37,18 @@ public class AndroidUninstallHandlerFactory extends BaseAndroidAdapter {
 
     private void autoConfirmUninstall() {
         // TODO: 适配机型，如5.0.*手机文本乱码问题
-        def config = ADB_UNINSTALL_TMP_CONFIG = AutoConfirmConfig.newDef()
-        config.name = 'autoConfirmUninstall'
-        config.packages = ['com.android.packageinstaller']
-        config.confirmBtnTextFilter = { btn ->
-            def btnText = btn.text
-            def ret = ['卸载', '完成', '确定', '确认', '允许', '同意'].contains(btnText)
-            ret = ret || 'ok'.equalsIgnoreCase(btnText) || 'confirm'.equalsIgnoreCase(btnText)
-            ret = ret || 'uninstall'.equalsIgnoreCase(btnText) || 'done'.equalsIgnoreCase(btnText)
-            ret = ret || ['下一步'].contains(btnText) || 'next'.equalsIgnoreCase(btnText)
-            return ret
-        }
+        def config = ADB_UNINSTALL_TMP_CONFIG = AutoConfirmConfig.newConfig(
+                name: 'autoConfirmUninstall',
+                packages: ['com.android.packageinstaller'],
+                confirmBtnTextFilter: { btn ->
+                    def btnText = btn.text
+                    def ret = ['卸载', '完成', '确定', '确认', '允许', '同意'].contains(btnText)
+                    ret = ret || 'ok'.equalsIgnoreCase(btnText) || 'confirm'.equalsIgnoreCase(btnText)
+                    ret = ret || 'uninstall'.equalsIgnoreCase(btnText) || 'done'.equalsIgnoreCase(btnText)
+                    ret = ret || ['下一步'].contains(btnText) || 'next'.equalsIgnoreCase(btnText)
+                    return ret
+                }
+        )
         mAutoConfirmUtil.performAutoConfirm(config)
     }
 
