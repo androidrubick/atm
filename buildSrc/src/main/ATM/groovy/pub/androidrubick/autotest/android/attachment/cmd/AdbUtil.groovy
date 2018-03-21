@@ -43,9 +43,12 @@ class AdbUtil extends BaseAndroidAttachment {
      * 生成设备当前的UI结构，并存储到本地
      * @return 本地的文件路径，File
      */
-    public File dumpUIFile2Local() {
+    public File dumpUIFile2Local(String dirName = null) {
         def dumpFileInDevice = new File(androidSdk.adbShell.uiautomator.dumpUIFileInDevice())
         def tmpDir = new File(project.rootProject.buildDir, 'tmp/dump-ui')
+        if (!isEmpty(dirName)) {
+            tmpDir = new File(tmpDir, dirName)
+        }
         ensureDirExists(tmpDir)
 
         def dumpFileInLocal = new File(tmpDir, dumpFileInDevice.name)

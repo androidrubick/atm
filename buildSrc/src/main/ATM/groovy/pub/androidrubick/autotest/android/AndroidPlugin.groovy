@@ -8,6 +8,7 @@ import pub.androidrubick.autotest.android.tasks.app.AndroidArchiveCollector
 import pub.androidrubick.autotest.android.tasks.install.InstallApkTask
 import pub.androidrubick.autotest.android.tasks.install.UninstallApkTask
 import pub.androidrubick.autotest.android.tasks.launch.LaunchAndroidAppTask
+import pub.androidrubick.autotest.android.tasks.other.DumpUITask
 import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.BaseATMPlugin
 import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
@@ -67,6 +68,10 @@ public class AndroidPlugin extends BaseATMPlugin {
                     task.archiveCollector = ac
                 }.dependsOn(collectTaskName)
             }
+        }
+
+        project.with {
+            tasks.create('dumpUI', DumpUITask.class).dependsOn(TASK_COLLECT_ANDROID_DEVICE)
         }
     }
 

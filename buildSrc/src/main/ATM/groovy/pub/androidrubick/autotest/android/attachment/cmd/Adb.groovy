@@ -9,6 +9,7 @@ import pub.androidrubick.autotest.core.attachment.cmd.ExecResult
 
 import static pub.androidrubick.autotest.core.util.CmdResultUtils.nonEmptyLines
 import static pub.androidrubick.autotest.core.util.CmdResultUtils.nonEmptyValuesOfLine
+import static pub.androidrubick.autotest.core.util.CmdResultUtils.quotedStringArg
 
 @SuppressWarnings("GroovyUnusedDeclaration")
 class Adb extends BaseAndroidAttachment {
@@ -37,14 +38,16 @@ class Adb extends BaseAndroidAttachment {
 
     @NonNull
     public ExecResult pullFile(File remote, File local) {
-        return builder("pull ${remote.absolutePath} ${local.absolutePath}").exec()
-                .checkNonEmptyText('pullFile')
+        def fromParam = quotedStringArg(remote.absolutePath)
+        def toParam = quotedStringArg(local.absolutePath)
+        return builder("pull $fromParam $toParam").exec().checkNonEmptyText('pullFile')
     }
 
     @NonNull
     public ExecResult pushFile(File local, File remote) {
-        return builder("push ${local.absolutePath} ${remote.absolutePath}").exec()
-                .checkNonEmptyText('pushFile')
+        def fromParam = quotedStringArg(local.absolutePath)
+        def toParam = quotedStringArg(remote.absolutePath)
+        return builder("push $fromParam $toParam").exec().checkNonEmptyText('pushFile')
     }
 
     @NonNull

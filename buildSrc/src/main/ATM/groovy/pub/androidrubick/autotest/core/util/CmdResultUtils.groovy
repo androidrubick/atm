@@ -36,4 +36,8 @@ public class CmdResultUtils {
         }
         return isEmpty(ret) ? [] : ret
     }
+
+    public static String quotedStringArg(String arg) {
+        return ['"', arg, '"'].join()
+    }
 }

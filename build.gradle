@@ -2,6 +2,7 @@
 //noinspection GroovyUnusedAssignment
 def ATM_LOCAL_PATH = buildscript.sourceFile.parentFile
 
+//apply plugin: 'atm'
 apply plugin: 'atm.android'
 
 task clean(type: Delete) {
