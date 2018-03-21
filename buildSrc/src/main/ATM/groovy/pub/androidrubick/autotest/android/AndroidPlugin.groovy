@@ -12,6 +12,7 @@ import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.BaseATMPlugin
 import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
 import pub.androidrubick.autotest.core.attachment.app.AppPlatform
+import pub.androidrubick.autotest.core.tasks.upload.Upload2PgyerTask
 import pub.androidrubick.autotest.core.util.Utils
 
 /**
@@ -59,6 +60,11 @@ public class AndroidPlugin extends BaseATMPlugin {
                 tasks.create(launchTaskName, LaunchAndroidAppTask.class) { task ->
                     task.archiveCollector = ac
                 }.dependsOn(installTaskName)
+
+                def uploadTaskName = 'upload' + capitalizedTypeName + '2Pgyer'
+                tasks.create(uploadTaskName, Upload2PgyerTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(collectTaskName)
             }
         }
     }
