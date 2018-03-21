@@ -43,4 +43,14 @@ public class InstrumentTestClz {
         return new InstrumentTestClz(clz, method)
     }
 
+    /**
+     * @param map [clzName: xx] or [clzName: xx, method: xx]
+     */
+    public static InstrumentTestClz fromMap(Map map) {
+        if (Utils.isEmpty(map)) {
+            return new InstrumentTestClz('')
+        }
+        return new InstrumentTestClz(map.clzName ?: '', map.method)
+    }
+
 }
