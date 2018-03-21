@@ -36,10 +36,10 @@ public class AndroidPlugin extends BaseATMPlugin {
         }
 
         def context = AndroidSdk.fromProject(project).context
-        AppArchiveType.allAvailableOf(AppPlatform.Android).collect {
-            new AndroidArchiveCollector(context, it)
+        AppArchiveType.allAvailableOf(AppPlatform.Android).collect { AppArchiveType type ->
+            new AndroidArchiveCollector(context, type)
         }.each { ac ->
-            ac.createCollectAppTask()
+            ac.createCollectAndroidAppTask().dependsOn(TASK_COLLECT_ANDROID_DEVICE)
         }.each { ac ->
             String capitalizedTypeName = Utils.capitalize(ac.type.name)
             project.with {

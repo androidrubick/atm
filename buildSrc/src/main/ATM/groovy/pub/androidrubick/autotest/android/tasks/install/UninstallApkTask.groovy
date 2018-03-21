@@ -5,7 +5,7 @@ import pub.androidrubick.autotest.android.attachment.installer.AndroidUninstalle
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
-import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
+import pub.androidrubick.autotest.android.tasks.app.BaseAndroidCollectDependentTask
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
 import static pub.androidrubick.autotest.android.property.AndroidGradleProperties.UNINSTALL_OLD
@@ -19,7 +19,7 @@ import static pub.androidrubick.autotest.android.property.AndroidGradlePropertie
  * @since 1.0.0
  */
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
-public class UninstallApkTask extends BaseCollectDependentTask {
+public class UninstallApkTask extends BaseAndroidCollectDependentTask {
 
     public UninstallApkTask() {
         group = TaskGroups.GROUP_INSTALL

@@ -59,6 +59,19 @@ class AdbUtil extends BaseAndroidAttachment {
     }
 
     /**
+     * @param pkg package id
+     * @return id in int
+     * @throws RuntimeException if failed to execute cmd line
+     */
+    public int getPid(String pkg) {
+        def pid = androidSdk.adbShell.builder("ps | grep $pkg").exec()
+                .checkNonEmptyText('getPid').text.split(/[\s]+/)
+                .collect { n -> n.trim() }?.get(1)
+        atm.preds.nonNull(pid, 'getPid <pid>')
+        return pid as int
+    }
+
+    /**
      * @return 机型信息
      * @throws RuntimeException 当执行命令行发生错误时抛出异常
      */

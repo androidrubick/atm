@@ -1,6 +1,7 @@
-package pub.androidrubick.autotest.android.tasks
+package pub.androidrubick.autotest.android.tasks.app
 
-import pub.androidrubick.autotest.android.tasks.app.AndroidArchiveCollector
+import pub.androidrubick.autotest.android.tasks.BaseAndroidTask
+import pub.androidrubick.autotest.core.tasks.app.IBaseCollectDependentTask
 
 /**
  * Base task used in this lib.
@@ -11,9 +12,10 @@ import pub.androidrubick.autotest.android.tasks.app.AndroidArchiveCollector
  * @since 1.0.0
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
-public abstract class BaseCollectDependentTask extends BaseAndroidTask {
+public abstract class BaseAndroidCollectDependentTask extends BaseAndroidTask
+        implements IBaseCollectDependentTask<AndroidArchiveCollector> {
 
-    public BaseCollectDependentTask() {
+    public BaseAndroidCollectDependentTask() {
     }
 
     private AndroidArchiveCollector mArchiveCollector
@@ -22,6 +24,7 @@ public abstract class BaseCollectDependentTask extends BaseAndroidTask {
         mArchiveCollector = archiveCollector
     }
 
+    @Override
     public AndroidArchiveCollector getArchiveCollector() {
         return mArchiveCollector
     }

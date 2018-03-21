@@ -8,7 +8,7 @@ import pub.androidrubick.autotest.android.attachment.launch.AndroidLauncher
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
-import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
+import pub.androidrubick.autotest.android.tasks.app.BaseAndroidCollectDependentTask
 import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 import pub.androidrubick.autotest.core.util.Utils
@@ -16,7 +16,7 @@ import pub.androidrubick.autotest.core.util.Utils
 import static pub.androidrubick.autotest.android.property.AndroidGradleProperties.TEST_CASE
 
 @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedDeclaration"])
-class LaunchAndroidAppTask extends BaseCollectDependentTask {
+class LaunchAndroidAppTask extends BaseAndroidCollectDependentTask {
 
     LaunchAndroidAppTask() {
         group = TaskGroups.GROUP_LAUNCH

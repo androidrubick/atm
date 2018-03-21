@@ -5,7 +5,7 @@ import pub.androidrubick.autotest.android.attachment.installer.AndroidInstaller
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
-import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
+import pub.androidrubick.autotest.android.tasks.app.BaseAndroidCollectDependentTask
 import pub.androidrubick.autotest.core.property.ATMGradleProperties
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
@@ -18,7 +18,7 @@ import pub.androidrubick.autotest.core.tasks.TaskGroups
  * @since 1.0.0
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
-public class InstallApkTask extends BaseCollectDependentTask {
+public class InstallApkTask extends BaseAndroidCollectDependentTask {
 
     public InstallApkTask() {
         group = TaskGroups.GROUP_INSTALL

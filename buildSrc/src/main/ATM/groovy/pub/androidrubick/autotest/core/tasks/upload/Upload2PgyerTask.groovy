@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 import static pub.androidrubick.autotest.core.util.Utils.isEmpty
 
-@SuppressWarnings("UnnecessaryQualifiedReference")
+@SuppressWarnings(["UnnecessaryQualifiedReference", "GroovyUnusedDeclaration"])
 public class Upload2PgyerTask extends BaseUploadTask {
 
     @Override

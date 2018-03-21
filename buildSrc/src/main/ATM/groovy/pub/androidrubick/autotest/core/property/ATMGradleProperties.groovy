@@ -1,5 +1,7 @@
 package pub.androidrubick.autotest.core.property
 
+import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
+
 @SuppressWarnings("GroovyUnusedDeclaration")
 class ATMGradleProperties {
 
@@ -9,6 +11,10 @@ class ATMGradleProperties {
 
     public static getTestAppPath() {
         return ['TEST_APP_PATH', 'TEST_ARCHIVE_PATH']
+    }
+
+    public static List<String> collectAppPathProps(AppArchiveType type) {
+        return type?.name?.toLowerCase()?.contains('test') ? testAppPath : appPath
     }
 
     /**
