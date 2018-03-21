@@ -24,6 +24,21 @@ public class AutoConfirmConfig {
     // 包过滤器，array
     public List<String> packages = []
     public Object confirmBtnTextFilter = null
+    public AutoConfirmConfig sync() {
+        this.sync = true
+        return this
+    }
+
+    public AutoConfirmConfig async() {
+        this.sync = false
+        return this
+    }
+
+    public AutoConfirmConfig done() {
+        this.doneFlag = true
+        return this
+    }
+
     public AutoConfirmConfig(Map config = null) {
         if (config != null) {
             ConfigureUtil.configureByMap(config, this)

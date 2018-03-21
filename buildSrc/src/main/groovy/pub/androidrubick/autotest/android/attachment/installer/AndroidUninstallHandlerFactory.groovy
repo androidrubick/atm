@@ -29,7 +29,7 @@ public class AndroidUninstallHandlerFactory extends BaseAndroidAdapter {
         }
 
         handler.doOnAdbUninstallSuccess {
-            ADB_UNINSTALL_TMP_CONFIG?.doneFlag = true
+            ADB_UNINSTALL_TMP_CONFIG?.done()
         }
 
         return handler

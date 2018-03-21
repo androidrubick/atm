@@ -29,7 +29,7 @@ public class AndroidInstallHandlerFactory extends BaseAndroidAdapter {
         }
 
         handler.doOnAdbInstallSuccess {
-            ADB_INSTALL_TMP_CONFIG?.doneFlag = true
+            ADB_INSTALL_TMP_CONFIG?.done()
         }
 
         if (isXiaomi()) {
