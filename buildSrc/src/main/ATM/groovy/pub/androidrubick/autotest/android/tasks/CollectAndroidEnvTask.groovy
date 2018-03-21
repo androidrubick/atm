@@ -21,16 +21,19 @@ class CollectAndroidEnvTask extends BaseAndroidTask {
         atm.logI("Android SDK Environment Name: $androidSDKEnvProName")
 
         if (isEmpty(androidSDKEnvProName)) {
-            throw new IllegalAccessException("No Android Home Found: you may add -PANROID_HOME in cmd")
+            try {
+                checkAdbEnv()
+            } catch (Throwable ignore) {
+                throw new IllegalAccessException("No Android Home Found: you may add -PANROID_HOME in cmd")
+            }
+        } else {
+            def dir = new File(atm.prop.value(androidSDKEnvProName))
+            atm.preds.file(dir, "Android Home: $androidSDKEnvProName")
+            androidSdk.configuration.with {
+                SDKDir = dir
+            }
+            checkAdbEnv()
         }
-
-        def dir = new File(atm.prop.value(androidSDKEnvProName))
-        atm.preds.file(dir, "Android Home: $androidSDKEnvProName")
-        androidSdk.configuration.with {
-            SDKDir = dir
-        }
-
-        checkAdbEnv()
     }
 
     private void checkAdbEnv() {
