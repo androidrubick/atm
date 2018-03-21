@@ -42,8 +42,9 @@ public class AndroidPlugin extends BaseATMPlugin {
         }.each { ac ->
             ac.createCollectAndroidAppTask().dependsOn(TASK_COLLECT_ANDROID_DEVICE)
         }.each { ac ->
-            String capitalizedTypeName = Utils.capitalize(ac.type.name)
             project.with {
+                def capitalizedTypeName = Utils.capitalize(ac.type.name)
+
                 def collectTaskName = ac.collectAppTask.name
                 def uninstallTaskName = 'uninstall' + capitalizedTypeName
                 def installTaskName = 'install' + capitalizedTypeName
