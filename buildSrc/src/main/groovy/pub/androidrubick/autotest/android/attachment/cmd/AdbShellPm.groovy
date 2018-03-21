@@ -6,6 +6,8 @@ import pub.androidrubick.autotest.android.model.InstallInfo
 import pub.androidrubick.autotest.android.model.UninstallInfo
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.cmd.ExecProcBuilder
+import pub.androidrubick.autotest.core.util.CmdResultUtils
+import pub.androidrubick.autotest.core.util.Utils
 
 @SuppressWarnings("GroovyUnusedDeclaration")
 class AdbShellPm extends BaseAndroidAttachment {
@@ -48,7 +50,10 @@ class AdbShellPm extends BaseAndroidAttachment {
     public void ensurePkgInstalled(String pkg) {
         def filterPkgResult = builder("list packages $pkg").exec()
                 .checkNonEmptyText("ensurePkgInstalled <$pkg> not installed")
-        atm.preds.isTrue(filterPkgResult.text.indexOf(pkg) >= 0, "ensurePkgInstalled <$pkg> not installed")
+        def found = CmdResultUtils.nonEmptyLines(filterPkgResult.text)?.find { line ->
+            line.trim().equalsIgnoreCase("package:$pkg")
+        }
+        atm.preds.isTrue(!Utils.isEmpty(found), "ensurePkgInstalled <$pkg> not installed")
     }
 
     public ExecProcBuilder uninstall(UninstallInfo uninstallInfo) {

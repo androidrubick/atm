@@ -6,6 +6,7 @@ import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
 import pub.androidrubick.autotest.android.tasks.BaseCollectDependentTask
+import pub.androidrubick.autotest.core.property.ATMGradleProperties
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 
 /**
@@ -25,11 +26,16 @@ public class InstallApkTask extends BaseCollectDependentTask {
 
     @TaskAction
     public void install() {
+        if (atm.prop.has(ATMGradleProperties.SKIP_INSTALL)) {
+            atm.logI("Task $name: Install Skipped")
+            return
+        }
+
         def context = androidSdk.context
         def installer = new AndroidInstaller(context)
         def appFile = archiveCollector.collectAppTask.appFile
 
-        atm.logI("Task $name: install <${appFile}> on device(s)")
+        atm.logI("Task $name: Install <${appFile}> on device(s)")
         new AndroidMultiDevicesExecutor(context) {
             @Override
             protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {

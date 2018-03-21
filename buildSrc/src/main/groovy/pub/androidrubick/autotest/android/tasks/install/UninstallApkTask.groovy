@@ -1,7 +1,7 @@
 package pub.androidrubick.autotest.android.tasks.install
 
 import org.gradle.api.tasks.TaskAction
-import pub.androidrubick.autotest.android.attachment.installer.AndroidInstaller
+import pub.androidrubick.autotest.android.attachment.installer.AndroidUninstaller
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.android.tasks.AndroidMultiDevicesExecutor
@@ -28,21 +28,27 @@ public class UninstallApkTask extends BaseCollectDependentTask {
     @TaskAction
     public void uninstall() {
         if (!atm.prop.has(UNINSTALL_OLD)) {
-            atm.log("Task $name: uninstall skipped")
+            atm.log("Task $name: Uninstall Skipped")
+            return
+        }
+
+        def appFile = archiveCollector.collectAppTask.appFile
+        def appInfo = archiveCollector.collectAppTask.appInfo
+
+        if (!androidSdk.adbShell.pm.checkPkgInstalled(appInfo.pkg)) {
+            atm.log("Task $name: Package <${appInfo.pkg}> unexists, Uninstall Skipped")
             return
         }
 
         def context = androidSdk.context
-        def installer = new AndroidInstaller(context)
-        def appFile = archiveCollector.collectAppTask.appFile
-        def appInfo = archiveCollector.collectAppTask.appInfo
+        def uninstaller = new AndroidUninstaller(context)
 
-        atm.logI("Task $name: uninstall <${appInfo.pkg}> on device(s)")
+        atm.logI("Task $name: Uninstall <${appInfo.pkg}> on device(s)")
         new AndroidMultiDevicesExecutor(context) {
             @Override
             protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {
                 // 卸载应用
-                installer.uninstall(appInfo.pkg)
+                uninstaller.uninstall(appInfo.pkg)
             }
         }.execute()
     }

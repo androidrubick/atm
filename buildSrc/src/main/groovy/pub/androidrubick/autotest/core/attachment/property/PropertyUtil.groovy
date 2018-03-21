@@ -24,7 +24,7 @@ public class PropertyUtil extends BaseAttachment {
      * @return 是否包含属性值
      * @since 1.0.0
      */
-    public Object has(String name) {
+    public boolean has(String name) {
         return project.hasProperty(name)
     }
 

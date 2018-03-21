@@ -19,7 +19,7 @@ public class UninstallInfo implements Cmdable {
     }
 
     private final String mPkg
-    private boolean mKeepData = true
+    private boolean mKeepData = false
 
     public UninstallInfo(@NonNull String pkg) {
         mPkg = pkg
