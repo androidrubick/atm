@@ -22,7 +22,7 @@ import static pub.androidrubick.autotest.android.property.AndroidGradlePropertie
 public class UninstallApkTask extends BaseAndroidCollectDependentTask {
 
     public UninstallApkTask() {
-        group = TaskGroups.GROUP_INSTALL
+        group = TaskGroups.GROUP_UNINSTALL
     }
 
     @TaskAction

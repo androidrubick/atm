@@ -16,6 +16,10 @@ abstract class TaskGroups {
      */
     static final String GROUP_INSTALL = 'install ATM'
     /**
+     * uninstall app / test app to devices
+     */
+    static final String GROUP_UNINSTALL = 'uninstall ATM'
+    /**
      * launch app / test app on devices
      */
     static final String GROUP_LAUNCH = 'launch ATM'

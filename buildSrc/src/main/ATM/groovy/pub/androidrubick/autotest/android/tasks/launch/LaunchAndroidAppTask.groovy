@@ -31,7 +31,8 @@ class LaunchAndroidAppTask extends BaseAndroidCollectDependentTask {
         helper.buildTest(testClz).noTimeout().exec()
     }
     private final List<Closure> mDoTestCases = []
-    public void doTestCase(@NonNull Closure closure) {
+    public void doTestCase(@DelegatesTo(value = AndroidInstrumentHelper.class, strategy = Closure.DELEGATE_FIRST)
+                           @NonNull Closure closure) {
         mDoTestCases << closure
     }
 

@@ -13,7 +13,7 @@ import pub.androidrubick.autotest.core.attachment.BaseAttachment
 @SuppressWarnings("GroovyUnusedDeclaration")
 public class AndroidSdk extends BaseAttachment {
 
-    public static final String INJECT_NAME = "android_sdk"
+    public static final String INJECT_NAME = "atm_android_sdk"
 
     public static AndroidSdk attach(@NonNull Project myProject) {
         if (myProject.extensions.findByName(INJECT_NAME) == null) {

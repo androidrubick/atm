@@ -1,13 +1,13 @@
 package pub.androidrubick.autotest.android
 
 import android.support.annotation.NonNull
+import pub.androidrubick.autotest.android.attachment.BaseAndroidAttachment
 import pub.androidrubick.autotest.android.model.AdbDevice
 import pub.androidrubick.autotest.android.model.DeviceInfo
 import pub.androidrubick.autotest.core.ATMContext
-import pub.androidrubick.autotest.core.attachment.BaseAttachment
 
 @SuppressWarnings("GroovyUnusedDeclaration")
-class AndroidSdkConfiguration extends BaseAttachment {
+class AndroidSdkConfiguration extends BaseAndroidAttachment {
 
     private String mSDKDir = ''
 

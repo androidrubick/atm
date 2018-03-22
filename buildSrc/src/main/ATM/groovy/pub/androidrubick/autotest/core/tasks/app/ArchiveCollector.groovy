@@ -30,11 +30,15 @@ public class ArchiveCollector<Task extends CollectAppTask> extends BaseAttachmen
         if (mCollectAppTask != null) {
             return mCollectAppTask
         }
-        String capitalizedTypeName = Utils.capitalize(type.name)
-        mCollectAppTask = project.tasks.create('collect' + capitalizedTypeName, clz) { Task task ->
+        mCollectAppTask = project.tasks.create(getCollectAppTaskName(this.type), clz) { Task task ->
             task.appArchiveType = this.type
         }
         return mCollectAppTask
+    }
+
+    public static String getCollectAppTaskName(AppArchiveType type) {
+        String capitalizedTypeName = Utils.capitalize(type.name)
+        return 'collect' + capitalizedTypeName
     }
 
 }
