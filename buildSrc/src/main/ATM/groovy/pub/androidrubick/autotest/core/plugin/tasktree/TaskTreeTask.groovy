@@ -1,9 +1,12 @@
 package pub.androidrubick.autotest.core.plugin.tasktree
 
-import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.diagnostics.AbstractReportTask
+import org.gradle.api.tasks.diagnostics.internal.ReportRenderer
+import org.gradle.api.tasks.diagnostics.internal.TextReportRenderer
+import org.gradle.internal.logging.text.StyledTextOutput
+import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.BaseATMPlugin
 import pub.androidrubick.autotest.core.tasks.BaseATMTask
 
@@ -15,14 +18,33 @@ import pub.androidrubick.autotest.core.tasks.BaseATMTask
  *
  * @since 1.0.0
  */
-@SuppressWarnings("GroovyUnusedDeclaration")
-public class TaskTreeTask extends BaseATMTask {
+@SuppressWarnings(["GroovyUnusedDeclaration", "GroovyUnusedAssignment"])
+public class TaskTreeTask extends AbstractReportTask {
 
+    private final ATM mATM
+    private TextReportRenderer mRenderer = new TextReportRenderer()
     public TaskTreeTask() {
+        mATM = ATM.wrapped(project, "Task $name:")
     }
 
-    @TaskAction
-    public void printTaskTree() {
+    /**
+     * provide `atm` for tasks
+     */
+    public final ATM getAtm() {
+        return mATM
+    }
+
+    @Override
+    protected ReportRenderer getRenderer() {
+        return mRenderer
+    }
+
+    @Override
+    protected void generate(Project project) throws IOException {
+        // textOutput is injected and set into renderer by the parent abstract class before this method is called
+        // define textOutput as a dynamic type because it resides in different packages in different gradle versions
+        def textOutput = mRenderer.textOutput
+
         Project rootProject = BaseATMPlugin.getRootProject(project)
 
         // 如果执行的所有任务中除了taskTree，还有其他的task，则只打印指定的任务的依赖；
@@ -43,24 +65,37 @@ public class TaskTreeTask extends BaseATMTask {
             l.path <=> r.path
         }
 
-        atm.log("allTasks: $allTasks")
+        atm.log("prepare print task tree of: $allTasks")
 
-        printTasks(allTasks)
+        printTasks(allTasks, textOutput)
     }
 
+    private void printTasks(List<Task> tasks, StyledTextOutput textOutput) {
+        printTasks(tasks, new GradleReportTextOutput(atm.context, textOutput))
+    }
+
+    /**
+     * use atm log
+     */
     private void printTasks(List<Task> tasks) {
-        TextOutput textOutput = new TextOutput()
+        printTasks(tasks, new ATMTaskTreeTextOutput(atm.context))
+    }
+
+    /**
+     * use atm log
+     */
+    private void printTasks(List<Task> tasks, TaskTreeTextOutput textOutput) {
         tasks.each {
-            render(it, new Printer(textOutput), true, true, new HashSet<>())
+            render(it, new TaskTreePrinter(textOutput), true, true, new HashSet<>())
             textOutput.println()
         }
     }
 
-    protected void render(Object entry, Printer renderer, boolean lastChild, boolean isFirst, Set rendered) {
+    protected void render(Object entry, TaskTreePrinter renderer, boolean lastChild, boolean isFirst, Set rendered) {
         final boolean taskSubtreeAlreadyPrinted = rendered.add(entry)
         def displayName = entry instanceof Task ? entry.path : String.valueOf(entry)
         renderer.visit({ textOutput ->
-            textOutput.text(displayName)
+            textOutput.printTaskName(displayName, isFirst)
         }, lastChild)
 
         if (entry instanceof Task) {
@@ -71,58 +106,6 @@ public class TaskTreeTask extends BaseATMTask {
                 render(child, renderer, i == children.size() - 1, false, rendered)
             }
             renderer.completeChildren()
-        }
-    }
-
-    protected class Printer {
-        boolean seenRootChildren
-        boolean lastChild = true
-
-        final List<String> mPrefixList = []
-        final TextOutput mTextOutput
-        public Printer(TextOutput textOutput) {
-            mTextOutput = textOutput
-        }
-
-        void visit(Action<? extends TextOutput> node, boolean lastChild) {
-            if (this.seenRootChildren) {
-                mTextOutput.text(this.prefix + (lastChild ? "\\--- " : "+--- "))
-            }
-
-            this.lastChild = lastChild
-            node.execute(mTextOutput)
-            mTextOutput.println()
-        }
-
-        public void startChildren() {
-            if (this.seenRootChildren) {
-                mPrefixList << (this.lastChild ? "     " : "|    ")
-            }
-            this.seenRootChildren = true;
-        }
-
-        public void completeChildren() {
-            if (this.prefix.empty) {
-                this.seenRootChildren = false;
-            } else {
-                mPrefixList.pop()
-            }
-        }
-
-        public String getPrefix() {
-            return mPrefixList.join()
-        }
-    }
-
-    protected class TextOutput {
-        final List cachedTexts = []
-        public void text(Object text) {
-            cachedTexts << text
-        }
-
-        public void println() {
-            atm.logI(cachedTexts.join())
-            cachedTexts.clear()
         }
     }
 
