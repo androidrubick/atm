@@ -4,6 +4,7 @@ import android.support.annotation.CallSuper
 import android.support.annotation.NonNull
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import pub.androidrubick.autotest.core.plugin.tasktree.TaskTreePlugin
 
 /**
  * Base task used in this lib.
@@ -12,12 +13,14 @@ import org.gradle.api.Project
  *
  * @since 1.0.0
  */
-@SuppressWarnings(["GroovyUnusedDeclaration", "WeakerAccess"])
+@SuppressWarnings(["GroovyUnusedDeclaration", "WeakerAccess", "GrMethodMayBeStatic"])
 public abstract class BaseATMPlugin implements Plugin<Project> {
 
     @Override
     public void apply(@NonNull Project project) {
         ATM atm = ATM.init(project)
+
+        project.apply(plugin: TaskTreePlugin)
 
         beforeApply(project, atm)
         applyMe(project, atm)

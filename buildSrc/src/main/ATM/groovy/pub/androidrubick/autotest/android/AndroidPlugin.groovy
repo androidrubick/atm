@@ -19,11 +19,13 @@ public class AndroidPlugin extends BaseATMPlugin {
     @Override
     protected void applyMe(@NonNull Project project, @NonNull ATM atm) {
         AndroidSdk.attach(project)
-        AndroidTaskGraph.attach(project)
+        AndroidTaskGraph taskGraph = AndroidTaskGraph.attach(project)
 
         project.with {
             tasks.create('dumpUI', DumpUITask.class).dependsOn(AndroidTaskGraph.TASK_COLLECT_ANDROID_DEVICE)
         }
+
+        atm.log("ATM task graph: ${taskGraph.allTasks}")
     }
 
 }
