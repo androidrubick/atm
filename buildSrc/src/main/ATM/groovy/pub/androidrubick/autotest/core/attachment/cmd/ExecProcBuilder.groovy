@@ -78,7 +78,7 @@ public class ExecProcBuilder extends BaseAttachment {
         if (this.context) {
             atm.log('>>>>>>>>>>>>>>>>>>>>>>>>>Process print start<<<<<<<<<<<<<<<<<<<<<<<<<')
             this.commands.each { command ->
-                atm.log('>', command)
+                atm.log("> $command")
             }
         }
     }

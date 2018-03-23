@@ -24,10 +24,10 @@ class LaunchAndroidAppTask extends BaseAndroidCollectDependentTask {
 
     private final Closure mDefaultTestCase = { AndroidInstrumentHelper helper ->
         def testCaseClzStr = atm.prop.value(TEST_CASE)
-        atm.preds.nonEmpty(testCaseClzStr, "Task $name: property <${TEST_CASE}>")
+        atm.preds.nonEmpty(testCaseClzStr, "property <${TEST_CASE}>")
         // 启动测试用例
         InstrumentTestClz testClz = InstrumentTestClz.parse(testCaseClzStr)
-        atm.logI("Task $name: start test <$testClz>")
+        atm.logI("start test <$testClz>")
         helper.buildTest(testClz).noTimeout().exec()
     }
     private final List<Closure> mDoTestCases = []

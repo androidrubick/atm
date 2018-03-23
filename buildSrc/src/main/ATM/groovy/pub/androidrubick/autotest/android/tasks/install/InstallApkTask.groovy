@@ -27,7 +27,7 @@ public class InstallApkTask extends BaseAndroidCollectDependentTask {
     @TaskAction
     public void install() {
         if (atm.prop.has(ATMGradleProperties.SKIP_INSTALL)) {
-            atm.logI("Task $name: Install Skipped")
+            atm.logI("Install Skipped")
             return
         }
 
@@ -35,7 +35,7 @@ public class InstallApkTask extends BaseAndroidCollectDependentTask {
         def installer = new AndroidInstaller(context)
         def appFile = archiveCollector.collectAppTask.appFile
 
-        atm.logI("Task $name: Install <${appFile}> on device(s)")
+        atm.logI("Install <${appFile}> on device(s)")
         new AndroidMultiDevicesExecutor(context) {
             @Override
             protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {

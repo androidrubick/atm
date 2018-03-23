@@ -39,7 +39,7 @@ class CollectAppTask extends BaseATMTask {
         def propertyNames = appPropertyNames
         def appFilePath = null
         if (isEmpty(propertyNames)) {
-            atm.logW("Task $name: appPropertyNames not set")
+            atm.logW("appPropertyNames not set")
         } else {
             // find first
             def found = propertyNames.collect { name ->
@@ -49,7 +49,7 @@ class CollectAppTask extends BaseATMTask {
             }
 
             if (found == null) {
-                atm.logW("Task $name: App file not set")
+                atm.logW("App file not set")
             } else {
                 appFilePath = found
             }

@@ -14,13 +14,15 @@ import pub.androidrubick.autotest.core.ATM
 @SuppressWarnings("GroovyUnusedDeclaration")
 public abstract class BaseATMTask extends DefaultTask {
 
+    private final ATM mATM
     public BaseATMTask() {
+        mATM = ATM.wrapped(project, "Task $name:")
     }
 
     /**
      * provide `atm` for tasks
      */
     public final ATM getAtm() {
-        return ATM.fromProject(project)
+        return mATM
     }
 }

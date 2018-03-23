@@ -11,6 +11,6 @@ public class DumpUITask extends BaseAndroidMultiDevicesTask {
     protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {
         def dirName = "${deviceInfo.brand}-${deviceInfo.model}-${deviceInfo.osVersion}"
         def file = androidSdk.adbUtil.dumpUIFile2Local(dirName)
-        atm.logI("Task $name: dump ui to file: $file")
+        atm.logI("dump ui to file: $file")
     }
 }

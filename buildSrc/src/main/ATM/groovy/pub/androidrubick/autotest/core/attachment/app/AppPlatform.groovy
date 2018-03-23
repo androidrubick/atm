@@ -1,7 +1,4 @@
 package pub.androidrubick.autotest.core.attachment.app
-
-import android.support.annotation.NonNull
-
 /**
  * 定义应用包类型；
  *

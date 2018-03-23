@@ -1,5 +1,6 @@
 package pub.androidrubick.autotest.android.tasks
 
+import android.util.Log
 import org.gradle.api.tasks.TaskAction
 import pub.androidrubick.autotest.android.property.AndroidGradleProperties
 import pub.androidrubick.autotest.core.tasks.TaskGroups
@@ -24,6 +25,7 @@ class CollectAndroidEnvTask extends BaseAndroidTask {
             try {
                 checkAdbEnv()
             } catch (Throwable ignore) {
+                atm.logE(Log.getStackTraceString(ignore))
                 throw new IllegalAccessException("No Android Home Found: you may add -PANROID_HOME in cmd")
             }
         } else {

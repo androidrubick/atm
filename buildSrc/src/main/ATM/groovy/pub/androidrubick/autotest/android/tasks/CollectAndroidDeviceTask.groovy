@@ -19,7 +19,7 @@ class CollectAndroidDeviceTask extends BaseAndroidTask {
             setDevices(devices)
         }
 
-        atm.log("$name: loaded devices: $devices")
+        atm.log("loaded devices: $devices")
     }
 
 }

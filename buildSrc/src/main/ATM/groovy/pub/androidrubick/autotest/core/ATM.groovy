@@ -51,8 +51,24 @@ public abstract class ATM implements IATM {
         return project."$INJECT_NAME"
     }
 
-    public static ATM wrapped(ATM base, Object tag) {
+    /**
+     * get the {@link ATM} implementation from target project
+     * @param base base IATM implementation
+     * @return the wrapped {@link ATM} implementation
+     * @since 1.0.0
+     */
+    public static ATM wrapped(IATM base, Object tag) {
         return new ATMLogTagWrapper(base, tag)
+    }
+
+    /**
+     * get the {@link ATM} implementation from target project
+     * @param project target project
+     * @return the {@link ATM} implementation
+     * @since 1.0.0
+     */
+    public static ATM wrapped(Project project, Object tag) {
+        return new ATMLogTagWrapper(fromProject(project), tag)
     }
 
     private final ATMContext mContext

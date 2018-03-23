@@ -19,7 +19,7 @@ class CollectAndroidAppTask extends CollectAppTask {
     protected void doAfterArchiveCollected(File appFile) {
         super.doAfterArchiveCollected(appFile)
         mAppInfo = androidSdk.cmd.apkAnalyzer.getAppInfo(appFile)
-        atm.logI("Task $name: app info: $appInfo")
+        atm.logI("app info: $appInfo")
     }
 
     /**

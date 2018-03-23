@@ -28,7 +28,7 @@ public class UninstallApkTask extends BaseAndroidCollectDependentTask {
     @TaskAction
     public void uninstall() {
         if (!atm.prop.has(UNINSTALL_OLD)) {
-            atm.log("Task $name: Uninstall Skipped")
+            atm.log("Uninstall Skipped")
             return
         }
 
@@ -36,14 +36,14 @@ public class UninstallApkTask extends BaseAndroidCollectDependentTask {
         def appInfo = archiveCollector.collectAppTask.appInfo
 
         if (!androidSdk.adbShell.pm.checkPkgInstalled(appInfo.pkg)) {
-            atm.log("Task $name: Package <${appInfo.pkg}> unexists, Uninstall Skipped")
+            atm.log("Package <${appInfo.pkg}> unexists, Uninstall Skipped")
             return
         }
 
         def context = androidSdk.context
         def uninstaller = new AndroidUninstaller(context)
 
-        atm.logI("Task $name: Uninstall <${appInfo.pkg}> on device(s)")
+        atm.logI("Uninstall <${appInfo.pkg}> on device(s)")
         new AndroidMultiDevicesExecutor(context) {
             @Override
             protected void doEachDevice(AdbDevice device, DeviceInfo deviceInfo) {
