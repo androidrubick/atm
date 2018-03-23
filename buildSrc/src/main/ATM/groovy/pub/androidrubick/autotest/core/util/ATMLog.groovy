@@ -23,13 +23,6 @@ public abstract class ATMLog {
         ATAndroidLog.use(fromProject(rootProject))
     }
 
-    @SuppressWarnings("GrMethodMayBeStatic")
-    protected void internalLog(messages) {
-        println null == messages ? 'null' : messages.join(' ')
-    }
-
-    public abstract void log(ATMLogLevel level, Object...msgs)
-
     /**
      * get the {@link ATMLog} implementation from target project
      * @param project target project
@@ -49,6 +42,13 @@ public abstract class ATMLog {
     public static ATMLog fromContext(@NonNull ATMContext context) {
         return fromProject(context.project)
     }
+
+    @SuppressWarnings("GrMethodMayBeStatic")
+    protected void internalLog(messages) {
+        println null == messages ? 'null' : messages.join(' ')
+    }
+
+    public abstract void log(ATMLogLevel level, Object...msgs)
 
     private static class ATMLogImpl extends ATMLog {
 

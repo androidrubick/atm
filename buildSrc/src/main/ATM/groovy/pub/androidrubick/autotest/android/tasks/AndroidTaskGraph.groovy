@@ -12,14 +12,15 @@ import pub.androidrubick.autotest.core.ATM
 import pub.androidrubick.autotest.core.ATMContext
 import pub.androidrubick.autotest.core.attachment.app.AppArchiveType
 import pub.androidrubick.autotest.core.attachment.app.AppPlatform
+import pub.androidrubick.autotest.core.tasks.TaskGraph
 import pub.androidrubick.autotest.core.tasks.TaskGroups
 import pub.androidrubick.autotest.core.tasks.upload.Upload2PgyerTask
 import pub.androidrubick.autotest.core.util.Utils
 
 @SuppressWarnings("GroovyUnusedDeclaration")
-class AndroidTaskGraph extends BaseAndroidAttachment {
+class AndroidTaskGraph extends BaseAndroidAttachment implements TaskGraph {
 
-    public static final String INJECT_NAME = "atm_tasks"
+    public static final String INJECT_NAME = "atm_android_tasks"
 
     public static AndroidTaskGraph attach(@NonNull Project myProject) {
         if (myProject.extensions.findByName(INJECT_NAME) == null) {
@@ -64,11 +65,11 @@ class AndroidTaskGraph extends BaseAndroidAttachment {
         }?.value
     }
 
-    public Task getCollectAndroidEnvTask(AppArchiveType appArchiveType) {
+    public Task getCollectAndroidEnvTask() {
         return mCollectAndroidEnvTask
     }
 
-    public Task getCollectAndroidDeviceTask(AppArchiveType appArchiveType) {
+    public Task getCollectAndroidDeviceTask() {
         return mCollectAndroidDeviceTask
     }
 
@@ -92,52 +93,56 @@ class AndroidTaskGraph extends BaseAndroidAttachment {
         return mTaskMap.get(appArchiveType)?.get(TaskGroups.GROUP_LAUNCH)
     }
 
+    public List<Task> getAllTasks() {
+        List<Task> tasks = [collectAndroidEnvTask, collectAndroidDeviceTask]
+        mTaskMap.each { type, map ->
+            tasks.addAll(map.values())
+        }
+        return tasks
+    }
+
     private Task mCollectAndroidEnvTask
     private Task mCollectAndroidDeviceTask
     private final Map<AppArchiveType, Map<String, Task>> mTaskMap = [:]
     private void buildGraph() {
         mCollectAndroidEnvTask = project.tasks.create(TASK_COLLECT_ANDROID_ENV, CollectAndroidEnvTask.class)
         mCollectAndroidDeviceTask = project.tasks.create(TASK_COLLECT_ANDROID_DEVICE,  CollectAndroidDeviceTask.class)
-        mCollectAndroidDeviceTask.dependsOn(TASK_COLLECT_ANDROID_ENV)
+        mCollectAndroidDeviceTask.dependsOn(mCollectAndroidEnvTask)
 
         def taskMap = mTaskMap
         archiveCollectors.each { ac ->
-            ac.createCollectAndroidAppTask().dependsOn(TASK_COLLECT_ANDROID_DEVICE)
+            ac.createCollectAndroidAppTask().dependsOn(collectAndroidDeviceTask)
         }.each { ac ->
             def taskMapForType = [:]
             taskMap.put(ac.type, taskMapForType)
             project.with {
                 def capitalizedTypeName = Utils.capitalize(ac.type.name)
 
-                def collectTaskName = ac.collectAppTask.name
+                def collectAppTask = ac.collectAppTask
                 def uninstallTaskName = 'uninstall' + capitalizedTypeName
                 def installTaskName = 'install' + capitalizedTypeName
                 def launchTaskName = 'launch' + capitalizedTypeName
 
-                taskMapForType.put(TaskGroups.GROUP_UNINSTALL,
-                        tasks.create(uninstallTaskName, UninstallApkTask.class) { task ->
-                            task.archiveCollector = ac
-                        }.dependsOn(collectTaskName)
-                )
+                def uninstallAppTask = tasks.create(uninstallTaskName, UninstallApkTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(collectAppTask)
+                taskMapForType.put(TaskGroups.GROUP_UNINSTALL, uninstallAppTask)
 
-                taskMapForType.put(TaskGroups.GROUP_INSTALL,
-                        tasks.create(installTaskName, InstallApkTask.class) { task ->
-                            task.archiveCollector = ac
-                        }.dependsOn(uninstallTaskName)
-                )
+                def installAppTask = tasks.create(installTaskName, InstallApkTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(uninstallAppTask)
+                taskMapForType.put(TaskGroups.GROUP_INSTALL, installAppTask)
 
-                taskMapForType.put(TaskGroups.GROUP_LAUNCH,
-                        tasks.create(launchTaskName, LaunchAndroidAppTask.class) { task ->
-                            task.archiveCollector = ac
-                        }.dependsOn(installTaskName)
-                )
+                def launchAppTask = tasks.create(launchTaskName, LaunchAndroidAppTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(installAppTask)
+                taskMapForType.put(TaskGroups.GROUP_LAUNCH, launchAppTask)
 
                 def uploadTaskName = 'upload' + capitalizedTypeName + '2Pgyer'
-                taskMapForType.put(TaskGroups.GROUP_UPLOAD,
-                        tasks.create(uploadTaskName, Upload2PgyerTask.class) { task ->
-                            task.archiveCollector = ac
-                        }.dependsOn(collectTaskName)
-                )
+                def uploadAppTask = tasks.create(uploadTaskName, Upload2PgyerTask.class) { task ->
+                    task.archiveCollector = ac
+                }.dependsOn(collectAppTask)
+                taskMapForType.put(TaskGroups.GROUP_UPLOAD, uploadAppTask)
             }
         }
     }
