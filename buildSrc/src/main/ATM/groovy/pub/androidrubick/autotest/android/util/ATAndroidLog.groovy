@@ -1,11 +1,10 @@
-package pub.androidrubick.autotest.android.util;
+package pub.androidrubick.autotest.android.util
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import pub.androidrubick.autotest.android.middle.AndroidLog;
-import pub.androidrubick.autotest.core.util.ATMLog;
-import pub.androidrubick.autotest.core.util.ATMLogLevel;
+import android.support.annotation.NonNull
+import android.util.Log
+import pub.androidrubick.autotest.android.middle.AndroidLog
+import pub.androidrubick.autotest.core.util.ATMLog
+import pub.androidrubick.autotest.core.util.ATMLogLevel
 
 /**
  * <p>
@@ -27,12 +26,12 @@ public class ATAndroidLog extends AndroidLog {
 
     @Override
     public void printLog(int level, String tag, String msg) {
-        mLogger.log(parseLevel(level), "[$tag]", msg);
+        mLogger.log(parseLevel(level), "[$tag] $msg");
     }
 
     @Override
     public void printLog(int level, String tag, String msg, @NonNull Throwable tr) {
-        mLogger.log(parseLevel(level), "[$tag]", msg);
+        mLogger.log(parseLevel(level), "[$tag] $msg");
         mLogger.log(parseLevel(level), Log.getStackTraceString(tr));
     }
 

@@ -14,7 +14,7 @@ import pub.androidrubick.autotest.core.ATM
 @SuppressWarnings("GroovyUnusedDeclaration")
 public abstract class BaseATMTask extends DefaultTask {
 
-    public BaseTask() {
+    public BaseATMTask() {
     }
 
     /**

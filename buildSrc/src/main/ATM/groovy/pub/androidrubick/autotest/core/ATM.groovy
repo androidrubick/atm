@@ -1,13 +1,13 @@
 package pub.androidrubick.autotest.core
 
 import android.support.annotation.NonNull
-
 import org.gradle.api.Project
 import pub.androidrubick.autotest.core.attachment.cmd.CmdUtil
 import pub.androidrubick.autotest.core.attachment.preds.PreconditionUtil
 import pub.androidrubick.autotest.core.attachment.property.PropertyUtil
 import pub.androidrubick.autotest.core.util.ATMLog
 import pub.androidrubick.autotest.core.util.ATMLogLevel
+import pub.androidrubick.autotest.core.util.ATMLogTagWrapper
 
 /**
  * 当 apply 任何插件时，会尝试向{@link Project project}注入名为`atm`的对象；
@@ -20,7 +20,7 @@ import pub.androidrubick.autotest.core.util.ATMLogLevel
  * @since 1.0.0
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
-public class ATM {
+public abstract class ATM implements IATM {
 
     public static final String INJECT_NAME = "atm"
 
@@ -34,7 +34,7 @@ public class ATM {
         ATMLog.init(rootProject)
 
         rootProject.allprojects { project ->
-            ATM myAtm = project.extensions.create(INJECT_NAME, ATM, project)
+            ATM myAtm = project.extensions.create(INJECT_NAME, ATMImpl.class, project)
 //            project.ext."$INJECT_NAME" = new ATM(project)
             myAtm.log("$INJECT_NAME of project <${project.name}> initialized")
         }
@@ -51,59 +51,107 @@ public class ATM {
         return project."$INJECT_NAME"
     }
 
+    public static ATM wrapped(ATM base, Object tag) {
+        return new ATMLogTagWrapper(base, tag)
+    }
+
     private final ATMContext mContext
     private ATMLogLevel mLogLevel = ATMLogLevel.Debug
 
-    public final CmdUtil cmd
-    public final PropertyUtil prop
-    public final PreconditionUtil preds
-
-    /**
-     * log debug
-     */
-    public final log
-    public final logD
-    public final logI
-    public final logW
-    public final logE
-    ATM(@NonNull Project project) {
+    private CmdUtil mCmdUtil
+    private PropertyUtil mPropUtil
+    private PreconditionUtil mPredsUtil
+    ATM(Project project) {
         mContext = new ATMContext(project)
-
-        this.logD = createLogClosure(ATMLogLevel.Debug)
-        this.logI = createLogClosure(ATMLogLevel.Info)
-        this.logW = createLogClosure(ATMLogLevel.Warn)
-        this.logE = createLogClosure(ATMLogLevel.Error)
-        this.log = this.logD
-
-        this.cmd = new CmdUtil(this.mContext)
-        this.prop = new PropertyUtil(this.mContext)
-        this.preds = new PreconditionUtil(this.mContext)
     }
 
-    public final ATMContext getContext() {
-        return mContext
+    @Override
+    void log(Object msg) {
+        logD(msg)
     }
 
-    public final void setLogLevel(level) {
-        if (level instanceof ATMLogLevel) {
-            this.mLogLevel = level
-        } else {
-            def l = ATMLogLevel.parse(String.valueOf(level))
-            if (l != null) {
-                this.mLogLevel = l
-            }
+    @Override
+    void logD(Object msg) {
+        printLog(ATMLogLevel.Debug, msg)
+    }
+
+    @Override
+    void logI(Object msg) {
+        printLog(ATMLogLevel.Info, msg)
+    }
+
+    @Override
+    void logW(Object msg) {
+        printLog(ATMLogLevel.Warn, msg)
+    }
+
+    @Override
+    void logE(Object msg) {
+        printLog(ATMLogLevel.Error, msg)
+    }
+
+    protected void printLog(ATMLogLevel level, Object msg) {
+        if (logLevel.isEnabled(level)) {
+            ATMLog.fromContext(context).log(level, msg)
         }
     }
 
-    public final ATMLogLevel getLogLevel() {
+    @Override
+    void setLogLevel(ATMLogLevel level) {
+        if (level instanceof ATMLogLevel) {
+            this.mLogLevel = level
+        }
+    }
+
+    void setLogLevel(Object level) {
+        this.setLogLevel(ATMLogLevel.parse(String.valueOf(level)))
+    }
+
+    @NonNull
+    @Override
+    ATMLogLevel getLogLevel() {
         return this.mLogLevel
     }
 
-    private createLogClosure(@NonNull ATMLogLevel level) {
-        return { Object... msgs ->
-            if (logLevel.isEnabled(level)) {
-                ATMLog.fromContext(context).log(level, msgs)
+    @Override
+    ATMContext getContext() {
+        return mContext
+    }
+
+    @Override
+    CmdUtil getCmd() {
+        if (null == mCmdUtil) {
+            synchronized (this) {
+                if (null == mCmdUtil) {
+                    mCmdUtil = new CmdUtil(this.context)
+                }
             }
         }
+        return mCmdUtil
     }
+
+    @Override
+    PropertyUtil getProp() {
+        if (null == mPropUtil) {
+            synchronized (this) {
+                if (null == mPropUtil) {
+                    mPropUtil = new PropertyUtil(this.context)
+                }
+            }
+        }
+        return mPropUtil
+    }
+
+    @Override
+    PreconditionUtil getPreds() {
+        if (null == mPredsUtil) {
+            synchronized (this) {
+                if (null == mPredsUtil) {
+                    mPredsUtil = new PreconditionUtil(this.context)
+                }
+            }
+        }
+        return mPredsUtil
+    }
+
 }
