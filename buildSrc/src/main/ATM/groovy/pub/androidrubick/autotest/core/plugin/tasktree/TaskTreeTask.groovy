@@ -65,9 +65,9 @@ public class TaskTreeTask extends AbstractReportTask {
             l.path <=> r.path
         }
 
-        atm.log("prepare print task tree of: $allTasks")
-
         printTasks(allTasks, textOutput)
+
+        atm.log("Prepare print task tree of: $allTasks")
     }
 
     private void printTasks(List<Task> tasks, StyledTextOutput textOutput) {
@@ -81,9 +81,6 @@ public class TaskTreeTask extends AbstractReportTask {
         printTasks(tasks, new ATMTaskTreeTextOutput(atm.context))
     }
 
-    /**
-     * use atm log
-     */
     private void printTasks(List<Task> tasks, TaskTreeTextOutput textOutput) {
         tasks.each {
             render(it, new TaskTreePrinter(textOutput), true, true, new HashSet<>())
