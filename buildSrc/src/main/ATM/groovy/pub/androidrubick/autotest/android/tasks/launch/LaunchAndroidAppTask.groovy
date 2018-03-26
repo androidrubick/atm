@@ -51,7 +51,7 @@ class LaunchAndroidAppTask extends BaseAndroidCollectDependentTask {
                 }
             }.execute()
         } else {
-            def appInfo = androidSdk.cmd.apkAnalyzer.getAppInfo(appFile)
+            def appInfo = archiveCollector.collectAppTask.appInfo
             def launcher = new AndroidLauncher(context)
             new AndroidMultiDevicesExecutor(context) {
                 @Override
